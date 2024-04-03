@@ -6,3 +6,5 @@ For the creation of the QGIS plugin we use the Plugin Builder 3 which itself is 
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/ae974bdd-67e0-49ac-9afb-45e81a1f7f6b)
 
+
+
