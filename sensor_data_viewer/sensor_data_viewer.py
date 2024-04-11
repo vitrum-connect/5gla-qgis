@@ -25,6 +25,8 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
+from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
+
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
@@ -179,9 +181,25 @@ class SensorDataViewer:
                 action)
             self.iface.removeToolBarIcon(action)
 
-
     def run(self):
-        """Run method that performs all the real work"""
+        mc = self.iface.mapCanvas()
+        map_layers = []
+        for lyr in mc.layers():
+            map_layers.append(lyr.name())
+
+        # This Codeblock checks if the Layer is included otherwise it informs the User
+        """ 
+        missing_layers = []
+        if not "sentek_sensor" in map_layers:
+            missing_layers.append("Raptor Nests")
+        if missing_layers:
+            msg = "The following layers are missing from this project\n"
+            for lyr in missing_layers:
+                msg += "\n{}".format(lyr)
+            QMessageBox.critical(self.dlg,"Missing layers",msg)
+            return
+        """
+
 
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
@@ -195,6 +213,25 @@ class SensorDataViewer:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-            pass
+            # Sets all the user inputs for the data connection
+            host = self.dlg.textBoxHost.text()
+            port = str(self.dlg.spbPort.value())
+            dbname = self.dlg.textBoxDatabase.text()
+            tablename = self.dlg.textBoxTable.text()
+            schema = self.dlg.textBoxSchema.text()
+            user = self.dlg.textBoxUsername.text()
+            password = self.dlg.textBoxPassword.text()
+            self.add_postgis_layer(host,port,dbname,user,password,tablename,schema,"location")
+
+    def add_postgis_layer(self,host,port,dbname,user,password,tablename,schema,geom):
+        uri = QgsDataSourceUri()
+        uri.setConnection(host, port, dbname,user, password)
+        uri.setDataSource(schema, tablename, geom)
+        layer = QgsVectorLayer(uri.uri(False), tablename, "postgres")
+
+        if not layer.isValid():
+            print("Layer failed to load!")
+            return
+
+        QgsProject.instance().addMapLayer(layer)
+        print("Layer added successfully!")
