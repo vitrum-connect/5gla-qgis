@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/Sensor Data Viewer" >
+    <qresource prefix="/plugins/sensor_data_viewer" >
         <file>icon.png</file>
     </qresource>
 </RCC>

@@ -3,14 +3,14 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Sensor Data Viewer
+name=5gLa sensor data viewer
 qgisMinimumVersion=3.0
-description=This plugin displays sensor data from the 5gLa project.
+description=Viewing sensor data from the 5gLa platform
 version=0.1
-author=Lukas Lange - Blue Sky Operations GmbH
-email=ll@vitrum-connect.de
+author=Blue Sky Operations GmbH
+email=ll@blue-sky-ops.de
 
-about=This plugin displays sensor data from the 5gLa project. This contains Sensors from Sentek and Agvolution. Data will be displayed over time in a graph.
+about=Viewing sensor data from the 5gLa platform. The platform uses fiware to store sensor data in a PostGis/PostGres database. The sensors are from different manufactors including for example Sentek and Agvolution. The Sensors can be selected via the QT gui or the Map Canvas.
 
 tracker=https://github.com/vitrum-connect/5gla-qgis/issues
 repository=https://github.com/vitrum-connect/5gla-qgis
@@ -23,9 +23,9 @@ hasProcessingProvider=no
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python 5gla sentek agvolution
+tags=postgis, osm
 
-homepage=https://www.5gla.de
+homepage=https://5gla.de/
 category=Plugins
 icon=icon.png
 # experimental flag
