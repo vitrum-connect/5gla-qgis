@@ -31,6 +31,7 @@ from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
 from .resources import *
 # Import the code for the dialog
 from .sensor_data_viewer_dialog import SensorDataViewerDialog
+from .sensor_data_viewer_config_dialog import SensorDataViewerConfigDialog
 import os.path
 
 
@@ -169,6 +170,12 @@ class SensorDataViewer:
             callback=self.run,
             parent=self.iface.mainWindow())
 
+        self.add_action(
+            icon_path,
+            text=self.tr(u'Config'),
+            callback=self.run,
+            parent=self.iface.mainWindow())
+
         # will be set False in run()
         self.first_start = True
 
@@ -180,6 +187,12 @@ class SensorDataViewer:
                 self.tr(u'&5gLa sensor data viewer'),
                 action)
             self.iface.removeToolBarIcon(action)
+
+
+    def runConfig(self):
+        if self.first_start == True:
+            self.first_start = False
+            self.dlg = SensorDataViewerConfigDialog()
 
     def run(self):
         mc = self.iface.mapCanvas()
