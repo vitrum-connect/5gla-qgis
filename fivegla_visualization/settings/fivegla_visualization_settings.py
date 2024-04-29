@@ -71,11 +71,11 @@ class FiveGLaVisualizationSettings:
             json.dump(config, json_file, indent=4)
 
     def testConnection(self):
-        """Saves settings"""
         self.saveCredentials()
+        msg_box = QMessageBox()
         connection = DatabaseConnection(self.config_file)
         isConnected = connection.connect()
-        msg_box = QMessageBox()
+
         if isConnected:
             msg="Connected to Database"
             msg_box.setWindowTitle("Information")

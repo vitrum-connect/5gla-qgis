@@ -8,7 +8,7 @@
                               -------------------
         begin                : 2024-04-29
         git sha              : $Format:%H$
-        copyright            : (C) 2024 by
+        copyright            : (C) 2024
         email                : ll@blue-sky-ops.de
  ***************************************************************************/
 
@@ -33,7 +33,7 @@ import os.path
 from .database_manager import DatabaseConnection
 from .settings import FiveGLaVisualizationSettings
 
-class fivegla_visualization:
+class FiveGLaVisualization:
 
     def __init__(self, iface):
         """Constructor."""
@@ -134,8 +134,4 @@ class fivegla_visualization:
     """This methode will ensure that all dependencys are setup before the first dialog is called"""
     def firstStart(self):
         if self.first_start:
-            config_file = self.plugin_dir + "/database_manager/credentials.json"
-            connection = DatabaseConnection(config_file)
-            if not connection.connect():
-                """No Database Connection"""
             self.first_start = False
