@@ -85,18 +85,17 @@ class SensorDataViewer:
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('SensorDataViewer', message)
 
-
     def add_action(
-        self,
-        icon_path,
-        text,
-        callback,
-        enabled_flag=True,
-        add_to_menu=True,
-        add_to_toolbar=True,
-        status_tip=None,
-        whats_this=None,
-        parent=None):
+            self,
+            icon_path,
+            text,
+            callback,
+            enabled_flag=True,
+            add_to_menu=True,
+            add_to_toolbar=True,
+            status_tip=None,
+            whats_this=None,
+            parent=None):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -179,7 +178,6 @@ class SensorDataViewer:
         # will be set False in run()
         self.first_start = True
 
-
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
@@ -187,7 +185,6 @@ class SensorDataViewer:
                 self.tr(u'&5gLa sensor data viewer'),
                 action)
             self.iface.removeToolBarIcon(action)
-
 
     def runConfig(self):
         if self.first_start == True:
@@ -213,7 +210,6 @@ class SensorDataViewer:
             return
         """
 
-
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
         if self.first_start == True:
@@ -234,11 +230,11 @@ class SensorDataViewer:
             schema = self.dlg.textBoxSchema.text()
             user = self.dlg.textBoxUsername.text()
             password = self.dlg.textBoxPassword.text()
-            self.add_postgis_layer(host,port,dbname,user,password,tablename,schema,"location")
+            self.add_postgis_layer(host, port, dbname, user, password, tablename, schema, "location")
 
-    def add_postgis_layer(self,host,port,dbname,user,password,tablename,schema,geom):
+    def add_postgis_layer(self, host, port, dbname, user, password, tablename, schema, geom):
         uri = QgsDataSourceUri()
-        uri.setConnection(host, port, dbname,user, password)
+        uri.setConnection(host, port, dbname, user, password)
         uri.setDataSource(schema, tablename, geom)
         layer = QgsVectorLayer(uri.uri(False), tablename, "postgres")
 

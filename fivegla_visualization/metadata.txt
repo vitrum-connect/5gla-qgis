@@ -1,0 +1,47 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=5GLa Visualization
+qgisMinimumVersion=3.0
+description=This plugin visualizes the measured values ​​and results of the 5GLa project.
+version=0.1
+author=Lukas Lange / Blue Sky Operations GmbH
+email=ll@blue-sky-ops.de
+
+about=This plugin visualizes the measured values ​​and results of the 5GLa project. This includes, among other things, the measured values ​​from soil moisture sensors and multispectral drone images.
+
+tracker=https://github.com/vitrum-connect/5gla-qgis/issues
+repository=https://github.com/vitrum-connect/5gla-qgis
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=no
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=python
+
+homepage=https://5gla.de/
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=
+
+Category of the plugin: Raster, Vector, Database or Web
+# category=
+
+# If the plugin can run on QGIS Server.
+server=False
+
