@@ -5,4 +5,7 @@
     <qresource prefix="/plugins/fivegla_visualization">
         <file>icons/settings.png</file>
     </qresource>
+        <qresource prefix="/plugins/fivegla_visualization">
+        <file>icons/5gla.png</file>
+    </qresource>
 </RCC>

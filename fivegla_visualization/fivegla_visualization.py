@@ -30,7 +30,8 @@ from .resources import *
 # Import the code for the dialog
 from .fivegla_visualization_dialog import fivegla_visualizationDialog
 import os.path
-
+from .database_manager import DatabaseConnection
+from .settings import FiveGLaVisualizationSettings
 
 class fivegla_visualization:
 
@@ -105,20 +106,20 @@ class fivegla_visualization:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
+        self.first_start = True
 
-        icon_plugin = ':/plugins/fivegla_visualization/icons/5gla.png'
         icon_settings = ':/plugins/fivegla_visualization/icons/settings.png'
         settings_action_text = u'Settings'
+        # will be set False after the first dialog was called
 
+        fivegla_visualization_settings = FiveGLaVisualizationSettings(self.iface,self.firstStart)
+        """Add Settings Action"""
         self.add_action(
             icon_settings,
             text=self.tr(settings_action_text),
-            callback=self.run,
+            callback=lambda: fivegla_visualization_settings.run(),
             add_to_toolbar=False,
             parent=self.iface.mainWindow())
-
-        # will be set False in run()
-        self.first_start = True
 
 
     def unload(self):
@@ -130,21 +131,11 @@ class fivegla_visualization:
             self.iface.removeToolBarIcon(action)
 
 
-    def run(self):
-        """Run method that performs all the real work"""
-
-        # Create the dialog with elements (after translation) and keep reference
-        # Only create GUI ONCE in callback, so that it will only load when the plugin is started
-        if self.first_start == True:
+    """This methode will ensure that all dependencys are setup before the first dialog is called"""
+    def firstStart(self):
+        if self.first_start:
+            config_file = self.plugin_dir + "/database_manager/credentials.json"
+            connection = DatabaseConnection(config_file)
+            if not connection.connect():
+                """No Database Connection"""
             self.first_start = False
-            self.dlg = fivegla_visualizationDialog()
-
-        # show the dialog
-        self.dlg.show()
-        # Run the dialog event loop
-        result = self.dlg.exec_()
-        # See if OK was pressed
-        if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-            pass
