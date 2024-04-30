@@ -1,6 +1,6 @@
 # 5gLa-QGIS
 ## Description
-This QGIS plugin provides the visualization of sensor data from the 5gLA platform. It is part of the 5GLA project, which is funded by the German Federal Ministry of Transport and Digital Infrastructure ( BMVI).The website of the project is https://www.5gla.de/, you can find all additional information there.
+This QGIS plugin provides the visualization of data from the 5gLA platform. It is part of the 5GLA project, which is funded by the German Federal Ministry of Transport and Digital Infrastructure ( BMVI).The website of the project is https://www.5gla.de/, you can find all additional information there.
 If you want to create you own QGIS Plugin you can follow along. If you just want to use the plugin you can start straight with the Section "Install the plugin".
 ## QGIS Plugin Creation
 For the creation of the QGIS plugin we use the Plugin Builder 3 which itself is a QGIS plugin. The Plugin can be installed directly over the QGIS UI.
@@ -31,7 +31,7 @@ Before we can install the plugin we need to compile the plugin. To change the ic
 
 We cd into the plugin folder and use the pyrcc5 comand to compile the plugin.
 ## Install the plugin
-First we need to copy our plugin folder (sensor_data_viewer) to the Qgis python plugin directory.
+First we need to copy our plugin folder (fivegla_visualization) to the Qgis python plugin directory.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/651d9cd2-6b21-4075-b91f-8df3f43cb7a0)
 
@@ -41,4 +41,4 @@ To install the plugin you go to Plugins -> manage and install plugins.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/964f3d10-961a-47d4-8378-2ee64f802d3b)
 
-You should find the 5gLa sensor data viewer in the UI. If you check the checkbox left to the plugin you install it. if you uncheck it you deactivate it. By clicking Uninstall plugin on the bottom you remove (delete) the plugin folder from your plugins directory.
+You should find the fivegla_visualization in the UI. If you check the checkbox left to the plugin you install it. if you uncheck it you deactivate it. By clicking Uninstall plugin on the bottom you remove (delete) the plugin folder from your plugins directory.
