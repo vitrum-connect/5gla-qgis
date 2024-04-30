@@ -27,7 +27,8 @@ The plugin folder will be exported to a directory of our choice.
 ## Change the icon and compile the plugin
 Before we can install the plugin we need to compile the plugin. To change the icon later, it is necessary to recompile the plugin. The icon will be stored in the resources.py. To compile the plugin we use the OSGeo4W Shell which comes with the QGIS installation. 
 
-![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/aea35309-6f4c-41af-a786-da7daa674950)
+![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/20ceb028-cdc8-47b6-9c32-650e0ef01c50)
+
 
 We cd into the plugin folder and use the pyrcc5 comand to compile the plugin.
 ## Install the plugin
