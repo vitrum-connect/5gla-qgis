@@ -1,6 +1,6 @@
 # 5gLa-QGIS
 ## Description
-This QGIS plugin provides the visualization of data from the 5gLA platform. It is part of the 5GLA project, which is funded by the German Federal Ministry of Transport and Digital Infrastructure ( BMVI).The website of the project is https://www.5gla.de/, you can find all additional information there.
+This QGIS plugin provides the visualization of data from the 5gLA platform. It is part of the 5GLa project, which is funded by the German Federal Ministry of Transport and Digital Infrastructure ( BMVI).The website of the project is https://www.5gla.de/, you can find all additional information there.
 If you want to create you own QGIS Plugin you can follow along. If you just want to use the plugin you can start straight with the Section "Install the plugin".
 ## QGIS Plugin Creation
 For the creation of the QGIS plugin we use the Plugin Builder 3 which itself is a QGIS plugin. The Plugin can be installed directly over the QGIS UI.
@@ -19,7 +19,7 @@ Extra components couldb be added but currently they are not necessary.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/8c00fbb7-e1a3-4c40-a9b1-2edcb1291288)
 
-The URLs to the github repo, the 5gla website and our author contact details will be added.
+The URLs to the github repo, the 5GLa Website and our author contact details will be added.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/9a0e7c51-b6cc-4ee2-8be9-fae85d54e60d)
 
@@ -40,6 +40,7 @@ The easiest way is to go to settings --> Userprofiles --> open current profile d
 The Folder will be initialized with the start of qgis so you to restart qgis after you copying the folder to the plugin directory.
 To install the plugin you go to Plugins -> manage and install plugins.
 
-![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/964f3d10-961a-47d4-8378-2ee64f802d3b)
+![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/1a4f070f-f8a5-4f7a-80be-2811286c20e5)
+
 
 You should find the fivegla_visualization in the UI. If you check the checkbox left to the plugin you install it. if you uncheck it you deactivate it. By clicking Uninstall plugin on the bottom you remove (delete) the plugin folder from your plugins directory.
