@@ -19,7 +19,7 @@ Extra components couldb be added but currently they are not necessary.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/8c00fbb7-e1a3-4c40-a9b1-2edcb1291288)
 
-The URLs to the github repo, the 5GLa Website and our author contact details will be added.
+The URLs to the GitHub repository, the 5GLa Website and our author contact details will be added.
 
 ![image](https://github.com/vitrum-connect/5gla-qgis/assets/86096399/9a0e7c51-b6cc-4ee2-8be9-fae85d54e60d)
 
