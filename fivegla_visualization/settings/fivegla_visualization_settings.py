@@ -1,28 +1,37 @@
-from .fivegla_visualization_settings_dialog import fivegla_visualization_settingsDialog
+from .fivegla_visualization_settings_dialog import FiveGLaVisualizationSettingsDialog
 from qgis.PyQt.QtWidgets import QMessageBox
 import json
 import os.path
 from ..database_manager import DatabaseConnection
+from ..constants import Constants
 
 
 class FiveGLaVisualizationSettings:
+    """ Creates,reads and updates the crendentials.json file
+    """
+
     def __init__(self, iface, callbackFirstStart):
+        """
+
+        :param iface: A reference to the QGIS Interface
+        :param callbackFirstStart: A callback to a method which must run before the first start
+        """
         self.dlg = None
         self.iface = iface
         self.first_start = True
         self.callbackFirstStart = callbackFirstStart
-        current_path = os.path.dirname(__file__)
-        self.plugin_dir = os.path.abspath(os.path.join(current_path, os.pardir))
         self.config_file = None
 
     def run(self):
-        """Run method that performs all the real work"""
+        """ Create the dialog with elements (after translation) and keep reference
+        Only create GUI ONCE in callback, so that it will only load when the plugin is started
 
-        # Create the dialog with elements (after translation) and keep reference
-        # Only create GUI ONCE in callback, so that it will only load when the plugin is started
+        :return:
+        """
+
         if self.first_start:
             self.callbackFirstStart()
-            self.dlg = fivegla_visualization_settingsDialog()
+            self.dlg = FiveGLaVisualizationSettingsDialog()
             self.dlg.btnSaveDbCredentials.clicked.connect(self.testConnection)
             self.first_start = False
 
@@ -33,12 +42,14 @@ class FiveGLaVisualizationSettings:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
             pass
 
     def loadCredentials(self):
-        self.config_file = self.plugin_dir + "/database_manager/credentials.json"
+        """ Loads the credentitals from the credentilas.json and displays them in a QT Dialog
+
+        :return:
+        """
+        self.config_file = Constants.PLUGIN_DIR + "/database_manager/credentials.json"
         if not os.path.exists(self.config_file):
             config = {"dbname": "",
                       "user": "",
@@ -59,6 +70,10 @@ class FiveGLaVisualizationSettings:
             self.dlg.passwordline.setText(config['password'])
 
     def saveCredentials(self):
+        """ Updates the credentials
+
+        :return:
+        """
         with open(self.config_file, 'r') as f:
             config = json.load(f)
         config['host'] = self.dlg.textlineHost.text()
@@ -71,17 +86,21 @@ class FiveGLaVisualizationSettings:
             json.dump(config, json_file, indent=4)
 
     def testConnection(self):
+        """ Tests the Connection
+
+        :return:
+        """
         self.saveCredentials()
         msg_box = QMessageBox()
         connection = DatabaseConnection(self.config_file)
         isConnected = connection.connect()
 
         if isConnected:
-            msg="Connected to Database"
+            msg = "Connected to Database"
             msg_box.setWindowTitle("Information")
             msg_box.setIcon(QMessageBox.Information)
         else:
-            msg="Error connecting to Database."
+            msg = "Error connecting to Database."
             msg_box.setWindowTitle("Error")
             msg_box.setIcon(QMessageBox.Critical)
 

@@ -5,12 +5,12 @@
 [general]
 name=5GLa Visualization
 qgisMinimumVersion=3.0
-description=This plugin visualizes the measured values ​​and results of the 5GLa project.
+description=This plugin visualizes the measured values and results of the 5GLa project.
 version=0.1
 author=Lukas Lange / Blue Sky Operations GmbH
 email=ll@blue-sky-ops.de
 
-about=This plugin visualizes the measured values ​​and results of the 5GLa project. This includes, among other things, the measured values ​​from soil moisture sensors and multispectral drone images.
+about=This plugin visualizes the measured values and results of the 5GLa project. This includes, among other things, the measured values from soil moisture sensors and multispectral drone images.
 
 tracker=https://github.com/vitrum-connect/5gla-qgis/issues
 repository=https://github.com/vitrum-connect/5gla-qgis
