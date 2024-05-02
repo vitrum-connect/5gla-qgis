@@ -30,8 +30,8 @@ class DatabaseConnection:
         except Exception as e:
             return False
 
-    def addPostgisLayer(self, table_name, geometryColumn):
-        if self.uri == None:
+    def add_postgis_layer(self, table_name, geometry_column):
+        if self.uri is None:
             self.connect()
         self.uri.setTable(table_name)
         self.uri.setGeometryColumn(geometryColumn)
