@@ -14,6 +14,15 @@ class DatabaseConnection:
         self.connection = None
         self.config_file = Constants.DATABASE_CREDENTIALS_FILE
         self.custom_logger = CustomLogger()
+        if not os.path.exists(self.config_file):
+            config = {"dbname": "",
+                      "user": "",
+                      "password": "",
+                      "host": "",
+                      "port": "",
+                      "schema": ""}
+            with open(self.config_file, 'w') as f:
+                json.dump(config, f, indent=4)
         with open(self.config_file, 'r') as f:
             config = json.load(f)
         self.config = config
@@ -26,15 +35,6 @@ class DatabaseConnection:
 
         :return: The configuration as a dictionary
         """
-        if not os.path.exists(self.config_file):
-            config = {"dbname": "",
-                      "user": "",
-                      "password": "",
-                      "host": "",
-                      "port": "",
-                      "schema": ""}
-            with open(self.config_file, 'w') as f:
-                json.dump(config, f, indent=4)
         with open(self.config_file, 'r') as f:
             self.config = json.load(f)
         return self.config
