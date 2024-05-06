@@ -1,60 +1,113 @@
-from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
 import json
 import psycopg2
 from ..custom_logger import CustomLogger
+from ..constants import Constants
+import os.path
+
 
 class DatabaseConnection:
     """ Creates a database connection to a PostGis Database
-    """
-    def __init__(self, config_file):
-        self.config_file = config_file
-        self.uri = None
-        self.connection = None
-        self.custom_logger = CustomLogger()
 
-    def connect(self):
-        """ Sets up a connection to the Databse
+    """
+
+    def __init__(self):
+        self.connection = None
+        self.config_file = Constants.DATABASE_CREDENTIALS_FILE
+        self.custom_logger = CustomLogger()
+        with open(self.config_file, 'r') as f:
+            config = json.load(f)
+        self.config = config
+
+    def __del__(self):
+        self._close()
+
+    def get_config(self):
+        """ Gets the configuration from the config file or creates a new one
+
+        :return: The configuration as a dictionary
+        """
+        if not os.path.exists(self.config_file):
+            config = {"dbname": "",
+                      "user": "",
+                      "password": "",
+                      "host": "",
+                      "port": "",
+                      "schema": ""}
+            with open(self.config_file, 'w') as f:
+                json.dump(config, f, indent=4)
+        with open(self.config_file, 'r') as f:
+            self.config = json.load(f)
+        return self.config
+
+    def _create_connection(self):
+        """ Creates a connection to the database
+
         :return: A boolean that indicates whether the database connection was successful
         """
         try:
-            with open(self.config_file, 'r') as f:
-                config = json.load(f)
-
-            connection = psycopg2.connect(
-                host=config['host'],
-                port=config['port'],
-                dbname=config['dbname'],
-                user=config['user'],
-                password=config['password'])
-
-            if connection:
-                connection.close()
+            self.get_config()
+            self.connection = psycopg2.connect(
+                host=self.config['host'],
+                port=self.config['port'],
+                dbname=self.config['dbname'],
+                user=self.config['user'],
+                password=self.config['password'])
+            if self.connection:
                 self.custom_logger.log_info("Connection to database was successful.")
                 return True
             else:
-                connection.close()
                 self.custom_logger.log_info("Connection to database was not successful!")
                 return False
-
         except Exception as e:
             self.custom_logger.log_warning("An Exception trying to connect to the database.")
             return False
 
-    def add_postgis_layer(self, table_name, geometry_column):
-        """ Adds a PostGis Table as QGIS Layer to the MapCanvas
+    def test_connection(self):
+        """ Sets up a connection to the database
 
-        :param table_name: The name of a PostGis Table
-        :param geometry_column: The column which has the geometry information
-        :return: A boolean that indicates whether the layer was added successful
+        :return: A boolean that indicates whether the database connection was successful
         """
-        if self.uri is None:
-            self.connect()
-        self.uri.setTable(table_name)
-        self.uri.setGeometryColumn(geometry_column)
-        layer = QgsVectorLayer(self.uri.uri(False), table_name, "postgres")
-        if not layer.isValid():
-            self.custom_logger.log_warning("Layer is invalid!")
-            return False
-        QgsProject.instance().addMapLayer(layer)
-        self.custom_logger.log_warning("Layer added successfully!")
-        return True
+        return self._create_connection()
+
+    def _close(self):
+        """ Closes the database connection
+
+        :return:
+        """
+        if self.connection:
+            self.connection.close()
+            print("Database connection closed.")
+
+    def read_records(self, table_name, sql_filter=None, sql_select=None):
+        """ Reads records from a table using a filter and a selection
+
+        :param sql_select: Columns to select
+        :param table_name: Name of table
+        :param sql_filter: Filter selection
+        :return: A list of records or None
+        """
+        if self.connection is None:
+            self._create_connection()
+        try:
+            if sql_select is not None:
+                query = "SELECT {} ".format(sql_select)
+            else:
+                query = "SELECT * "
+
+            query_table = "FROM {}.{} ".format(self.config["schema"], table_name)
+            query += query_table
+            if sql_filter is not None:
+                query_filter = "WHERE {}".format(sql_filter)
+                query += query_filter
+
+            # Führe die SQL-Abfrage aus
+            cursor = self.connection.cursor()
+            cursor.execute(query)
+            records_tuple = cursor.fetchall()
+            records = [list(record) for record in records_tuple]
+            cursor.close()
+            return records
+
+        except Exception as e:
+            self.custom_logger.log_warning("Error reading from table '{}'".format(table_name))
+            return None

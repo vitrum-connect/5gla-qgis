@@ -4,6 +4,7 @@ import os.path
 from datetime import datetime
 from ..constants import Constants
 
+
 class CustomLogger:
     """ A custom Logger class
 
@@ -19,7 +20,6 @@ class CustomLogger:
         log_format = '[%(asctime)s] %(levelname)s [%(module)s.%(funcName)s:%(lineno)d]: %(message)s'
         formatter = logging.Formatter(log_format)
         self.file_handler.setFormatter(formatter)
-
 
     def log_info(self, message):
         """ Logs a info message
@@ -65,6 +65,5 @@ class CustomLogger:
 
         :return:
         """
-        # Entfernen des FileHandlers und Schließen der Log-Datei
         self.logger.removeHandler(self.file_handler)
         self.file_handler.close()
