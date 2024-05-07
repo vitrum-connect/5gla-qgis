@@ -43,6 +43,7 @@ class DevicePositionGateway:
         sql_order = "transactionid"
         transaction_ids_list = self.connection.read_records(self.table_name, sql_filter=sql_filter,
                                                             sql_select=sql_select, sql_order=sql_order)
+
         return self._to_array(transaction_ids_list)
 
     def get_latest_device_position(self, device_id, transaction_id):
@@ -60,6 +61,6 @@ class DevicePositionGateway:
         entity_id_list = self.connection.read_records(self.table_name, sql_filter=sql_filter, sql_select=sql_select,
                                                       sql_order=sql_order)
         entity_id = self._to_array(entity_id_list)
-        if len(entity_id) == 0:
+        if entity_id is None:
             return None
         return entity_id[0]

@@ -41,12 +41,13 @@ class FiveGLaVisualizationDevicePosition:
         # Run the dialog event loop
         result = self.dlg.exec_()
         # See if OK was pressed
+        self.clear_form()
         if result:
             pass
-        self.clear_form()
 
-    @staticmethod
-    def combo_box_filler(items, combo_box):
+
+
+    def combo_box_filler(self,items, combo_box):
         """Fills the combo box with the given items
 
         :param items: The items to fill the combo box with
@@ -54,6 +55,7 @@ class FiveGLaVisualizationDevicePosition:
 
         :return: None
         """
+        combo_box.clear()
         for item in items:
             combo_box.addItem(item)
 
