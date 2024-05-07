@@ -4,7 +4,6 @@ from ..custom_logger import CustomLogger
 from ..constants import Constants
 import os.path
 
-
 class DatabaseConnection:
     """ Creates a database connection to a PostGis Database
 
@@ -78,12 +77,13 @@ class DatabaseConnection:
             self.connection.close()
             print("Database connection closed.")
 
-    def read_records(self, table_name, sql_filter=None, sql_select=None):
+    def read_records(self, table_name, sql_filter=None, sql_select=None, sql_order=None):
         """ Reads records from a table using a filter and a selection
 
         :param sql_select: Columns to select
         :param table_name: Name of table
         :param sql_filter: Filter selection
+        :param sql_order: Order selection
         :return: A list of records or None
         """
         if self.connection is None:
@@ -97,8 +97,12 @@ class DatabaseConnection:
             query_table = "FROM {}.{} ".format(self.config["schema"], table_name)
             query += query_table
             if sql_filter is not None:
-                query_filter = "WHERE {}".format(sql_filter)
+                query_filter = "WHERE {} ".format(sql_filter)
                 query += query_filter
+
+            if sql_order is not None:
+                query_order = "ORDER BY {}".format(sql_order)
+                query += query_order
 
             # Führe die SQL-Abfrage aus
             cursor = self.connection.cursor()
