@@ -1,7 +1,8 @@
-from .fivegla_visualization_settings_dialog import FiveGLaVisualizationSettingsDialog
 import json
-from ..database_manager import DatabaseConnection
+
+from .fivegla_visualization_settings_dialog import FiveGLaVisualizationSettingsDialog
 from ..constants import Constants
+from ..database_manager import DatabaseConnection
 from ..ui_elements import MessageBox
 
 
@@ -35,12 +36,9 @@ class FiveGLaVisualizationSettings:
             self.dlg.btnSaveDbCredentials.clicked.connect(self.test_connection)
             self.first_start = False
 
-        # show the dialog
         self.load_credentials()
         self.dlg.show()
-        # Run the dialog event loop
         result = self.dlg.exec_()
-        # See if OK was pressed
         if result:
             pass
 
