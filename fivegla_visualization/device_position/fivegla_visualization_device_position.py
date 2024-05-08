@@ -37,11 +37,8 @@ class FiveGLaVisualizationDevicePosition:
             self.first_start = False
 
         self.fill_combo_box_device_ids()
-        # show the dialog
         self.dlg.show()
-        # Run the dialog event loop
         result = self.dlg.exec_()
-        # See if OK was pressed
         self.clear_form()
         if result:
             pass
