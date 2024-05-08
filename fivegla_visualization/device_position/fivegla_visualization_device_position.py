@@ -1,8 +1,9 @@
+from qgis.PyQt.QtWidgets import QPushButton
+
 from .fivegla_visualization_device_position_dialog import FiveGLaVisualizationDevicePositionDialog
 from ..database_manager import DevicePositionGateway
-from ..ui_elements import MessageBox
 from ..layer_manager import LayerManager
-from qgis.PyQt.QtWidgets import QPushButton
+from ..ui_elements import MessageBox
 
 
 class FiveGLaVisualizationDevicePosition:
@@ -44,8 +45,6 @@ class FiveGLaVisualizationDevicePosition:
         self.clear_form()
         if result:
             pass
-
-
 
     @staticmethod
     def combo_box_filler(items, combo_box):
