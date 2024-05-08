@@ -1,6 +1,6 @@
-from fivegla_visualization.custom_logger import CustomLogger
-from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject, QgsFeature
+from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
 
+from fivegla_visualization.custom_logger import CustomLogger
 from fivegla_visualization.database_manager import DatabaseConnection
 
 
@@ -45,8 +45,7 @@ class LayerManager:
         QgsProject.instance().addMapLayer(selected_layer)
         return True
 
-
-    def add_feature(self,layer, feature):
+    def add_feature(self, layer, feature):
         """ Adds a feature to a layer
 
         :param layer: The layer to add the feature to
@@ -104,7 +103,7 @@ class LayerManager:
         target_layer.updateFields()
         return target_layer
 
-    def clear_layer(self,layer):
+    def clear_layer(self, layer):
         """ Clears a layer
 
         :param layer: The layer to clear
