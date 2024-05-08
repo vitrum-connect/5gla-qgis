@@ -47,7 +47,8 @@ class FiveGLaVisualizationDevicePosition:
 
 
 
-    def combo_box_filler(self,items, combo_box):
+    @staticmethod
+    def combo_box_filler(items, combo_box):
         """Fills the combo box with the given items
 
         :param items: The items to fill the combo box with
