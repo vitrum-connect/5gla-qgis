@@ -62,7 +62,7 @@ class DatabaseConnection:
                 self.custom_logger.log_info("Connection to database was not successful!")
                 return False
         except Exception as e:
-            self.custom_logger.log_warning("An Exception trying to connect to the database.")
+            self.custom_logger.log_warning("An exception occurred trying to connect to the database: {}".format(e))
             return False
 
     def test_connection(self):
@@ -118,5 +118,6 @@ class DatabaseConnection:
             return records
 
         except Exception as e:
-            self.custom_logger.log_warning("Error reading from table '{}'".format(table_name))
+            self.custom_logger.log_warning(
+                "An exception occurred trying to read from the table '{}': {}".format(table_name, e))
             return None
