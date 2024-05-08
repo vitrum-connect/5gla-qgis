@@ -6,7 +6,8 @@ class DevicePositionGateway:
         self.connection = DatabaseConnection()
         self.table_name = "device_position"
 
-    def _to_array(self, records):
+    @staticmethod
+    def _to_array(records):
         """ Converts a list of records to an array
 
         :param records: The list of records
