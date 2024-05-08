@@ -6,7 +6,7 @@ from ..ui_elements import MessageBox
 
 
 class FiveGLaVisualizationSettings:
-    """ Creates,reads and updates the credentials to the database
+    """ Creates, reads and updates the credentials to the database
     """
 
     def __init__(self, iface, callback_first_start):
