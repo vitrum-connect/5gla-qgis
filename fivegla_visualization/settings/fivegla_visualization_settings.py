@@ -1,6 +1,5 @@
 from .fivegla_visualization_settings_dialog import FiveGLaVisualizationSettingsDialog
 import json
-import os.path
 from ..database_manager import DatabaseConnection
 from ..constants import Constants
 from ..ui_elements import MessageBox
