@@ -1,8 +1,11 @@
 import json
-import psycopg2
-from ..custom_logger import CustomLogger
-from ..constants import Constants
 import os.path
+
+import psycopg2
+
+from ..constants import Constants
+from ..custom_logger import CustomLogger
+
 
 class DatabaseConnection:
     """ Creates a database connection to a PostGis Database
@@ -89,6 +92,7 @@ class DatabaseConnection:
         """
         if self.connection is None:
             self._create_connection()
+        # noinspection PyBroadException
         try:
             if sql_select is not None:
                 query = "SELECT {} ".format(sql_select)
