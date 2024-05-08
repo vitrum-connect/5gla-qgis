@@ -43,6 +43,7 @@ class DatabaseConnection:
 
         :return: A boolean that indicates whether the database connection was successful
         """
+        # noinspection PyBroadException
         try:
             self.get_config()
             self.connection = psycopg2.connect(
