@@ -8,6 +8,7 @@ from .resources import *
 import os.path
 from .database_manager import DatabaseConnection
 from .settings import FiveGLaVisualizationSettings
+from .device_position import FiveGLaVisualizationDevicePosition
 from .constants import Constants
 
 
@@ -137,7 +138,7 @@ class FiveGLaVisualization:
     def initGui(self):
         """ Create the menu entries and toolbar icons inside the QGIS GUI.
 
-        :return:
+        :return: None
         """
         self.first_start = True
 
@@ -151,10 +152,20 @@ class FiveGLaVisualization:
             add_to_toolbar=False,
             parent=self.iface.mainWindow())
 
+        fivegla_visualization_device_position = FiveGLaVisualizationDevicePosition(self.iface, self.firstStart)
+        icon_device_position = ':/plugins/fivegla_visualization/icons/drone.png'
+        device_position_action_text = u'Device Position'
+        self.add_action(
+            icon_device_position,
+            text=self.tr(device_position_action_text),
+            callback=lambda: fivegla_visualization_device_position.run(),
+            add_to_toolbar=False,
+            parent=self.iface.mainWindow())
+
     def unload(self):
         """ Removes the plugin menu item and icon from QGIS GUI.
 
-        :return:
+        :return: None
         """
         for action in self.actions:
             self.iface.removePluginMenu(
@@ -165,7 +176,7 @@ class FiveGLaVisualization:
     def firstStart(self):
         """ The method ensures that all dependencies are correctly initialized and declared
 
-        :return:
+        :return: None
         """
         if self.first_start:
             self.first_start = False
