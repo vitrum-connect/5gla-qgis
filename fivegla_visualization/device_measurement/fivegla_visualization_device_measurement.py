@@ -3,6 +3,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from .fivegla_visualization_device_measurement_dialog import FiveGLaVisualizationDeviceMeasurementDialog
 from qgis.PyQt.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView
 
+import datetime
 import numpy as np
 
 
@@ -52,12 +53,26 @@ class FiveGLaVisualizationDeviceMeasurement:
         figure = Figure()
         axes = figure.gca()
         axes.set_title('Title')
-        x = np.random.normal(size=50)
-        y = np.random.normal(size=(3, 50))
+        # Create a two-dimensional double array with 10 numbers
+        # Assume data is an array of tuples, where each tuple is (date, y)
+        data = np.array([
+            (datetime.datetime(2022, 1, 1), 1),
+            (datetime.datetime(2022, 1, 2), 2),
+            (datetime.datetime(2022, 1, 3), 3),
+            (datetime.datetime(2022, 1, 4), 4),
+            (datetime.datetime(2022, 1, 5), 5),
+            (datetime.datetime(2022, 1, 6), 6),
+            (datetime.datetime(2022, 1, 7), 7),
+            (datetime.datetime(2022, 1, 8), 8),
+            (datetime.datetime(2022, 1, 9), 9),
+            (datetime.datetime(2022, 1, 10), 10)
+        ])
+
+        x, y = zip(*data)
+
         axes.legend()
         axes.grid()
-        for i in range(3):
-            axes.plot(x, y[i], "-k", label="test-{}".format(i))
+        axes.plot(x, y, "-k", label="test")
 
         canvas = FigureCanvas(figure)
         proxy_widget = self.dlg.scene.addWidget(canvas)
