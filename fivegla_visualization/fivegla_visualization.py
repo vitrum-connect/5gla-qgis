@@ -8,6 +8,7 @@ from .resources import *
 import os.path
 from .database_manager import DatabaseConnection
 from .settings import FiveGLaVisualizationSettings
+from .device_measurement import FiveGLaVisualizationDeviceMeasurement
 from .device_position import FiveGLaVisualizationDevicePosition
 from .constants import Constants
 
@@ -159,7 +160,17 @@ class FiveGLaVisualization:
             icon_device_position,
             text=self.tr(device_position_action_text),
             callback=lambda: fivegla_visualization_device_position.run(),
-            add_to_toolbar=False,
+            add_to_toolbar=True,
+            parent=self.iface.mainWindow())
+
+        fivegla_visualization_device_measurement = FiveGLaVisualizationDeviceMeasurement(self.iface, self.firstStart)
+        icon_device_measurement = ':/plugins/fivegla_visualization/icons/sensor.png'
+        device_measurement_action_text = u'Device Measurement'
+        self.add_action(
+            icon_device_measurement,
+            text=self.tr(device_measurement_action_text),
+            callback=lambda: fivegla_visualization_device_measurement.run(),
+            add_to_toolbar=True,
             parent=self.iface.mainWindow())
 
     def unload(self):
