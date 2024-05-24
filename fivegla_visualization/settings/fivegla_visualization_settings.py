@@ -76,6 +76,5 @@ class FiveGLaVisualizationSettings:
         :return: None
         """
         self.save_credentials()
-        msg_box = MessageBox()
         is_connected = self.database_connection.test_connection()
-        msg_box.show_conditional_box(is_connected, "Connected to Database", "Error connecting to Database.")
+        MessageBox.show_conditional_box(is_connected, "Connected to Database", "Error connecting to Database.")

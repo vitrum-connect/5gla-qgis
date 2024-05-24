@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1620</width>
-    <height>995</height>
+    <height>1098</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>120</y>
      <width>1600</width>
      <height>900</height>
     </rect>
@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>920</y>
+     <y>1030</y>
      <width>1601</width>
      <height>61</height>
     </rect>
@@ -45,6 +45,41 @@
      <string>Clear</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QComboBox" name="cmbEntityId">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>10</y>
+     <width>381</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>13</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Entity Id:</string>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -1,11 +1,11 @@
 from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
-
+from qgis.gui import QgsLayerTreeView
 from fivegla_visualization.custom_logger import CustomLogger
 from fivegla_visualization.database_manager import DatabaseConnection
 
 
 class LayerManager:
-    def __init__(self):
+    def __init__(self, iface):
         self.custom_logger = CustomLogger()
         config = DatabaseConnection().get_config()
         self.uri = QgsDataSourceUri()
@@ -15,6 +15,7 @@ class LayerManager:
                                config['dbname'],
                                config['user'],
                                config['password'])
+        self.iface = iface
 
     def select_layer(self, table_name, geometry_column):
         """ Selects a PostGis Table as QGIS Layer to the MapCanvas
@@ -128,22 +129,14 @@ class LayerManager:
         :return: A boolean that indicates whether the layer was added successful
         """
         memory_layer_name = "Latest Device Position"
-        project = QgsProject.instance()
-        layer_result_list = project.mapLayersByName(memory_layer_name)
-
-        # Creating a new layer if there is no layer with the name "Latest Device Position"
-        if len(layer_result_list) == 0:
-            latest_device_position_layer = None
-        else:
-            latest_device_position_layer = layer_result_list[0]
+        latest_device_position_layer = self.select_layer_from_qgs_project(memory_layer_name)
+        if latest_device_position_layer is not None:
             self.clear_layer(latest_device_position_layer)
 
-        # Initializing the layer if it is not initialized
         if latest_device_position_layer is None:
             device_position_layer = self.select_layer("device_position", "location")
             latest_device_position_layer = self.create_copy_of_layer(device_position_layer, memory_layer_name)
 
-        # Selecting the feature from the device position layer with the given entity id
         feature = self.select_feature("device_position", "location", entity_id)
         if feature is None:
             # Logging
@@ -152,3 +145,34 @@ class LayerManager:
         self.add_feature(latest_device_position_layer, feature)
         QgsProject.instance().addMapLayer(latest_device_position_layer)
         return True
+
+    def select_layer_from_qgis_project(self, layer_name):
+        """ Selects a layer from the QGS Project
+
+        :param layer_name: The name of the layer
+        :return: The layer or None if the layer was not found
+        """
+        project = QgsProject.instance()
+        layer_result_list = project.mapLayersByName(layer_name)
+        if len(layer_result_list) == 0:
+            return None
+        return layer_result_list[0]
+
+    def set_active_layer(self, layer_name):
+        project = QgsProject.instance()
+
+        layer = project.mapLayersByName(layer_name)
+        if not layer:
+            self.custom_logger.log_warning("Layer not found inside the QGIS Project!")
+            return
+
+        layer = layer[0]
+        layer_tree_view = self.iface.layerTreeView()
+        proxy_model = layer_tree_view.model()
+        source_model = proxy_model.sourceModel()
+        root = source_model.rootGroup()
+        node = root.findLayer(layer.id())
+        if node:
+            layer_tree_view.setCurrentLayer(layer)
+        else:
+            self.custom_logger.log_warning("Layer node for the layer not found!")
