@@ -129,7 +129,7 @@ class LayerManager:
         :return: A boolean that indicates whether the layer was added successful
         """
         memory_layer_name = "Latest Device Position"
-        latest_device_position_layer = self.select_layer_from_qgs_project(memory_layer_name)
+        latest_device_position_layer = self.select_layer_from_qgis_project(memory_layer_name)
         if latest_device_position_layer is not None:
             self.clear_layer(latest_device_position_layer)
 

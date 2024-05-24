@@ -5,6 +5,7 @@ from ..database_manager import DevicePositionGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox
 from ..ui_elements import UiHelper
+from ..custom_logger import CustomLogger
 
 
 class FiveGLaVisualizationDevicePosition:
@@ -20,6 +21,7 @@ class FiveGLaVisualizationDevicePosition:
         self.dlg = None
         self.iface = iface
         self.first_start = True
+        self.custom_logger = CustomLogger()
         self.layer_manager = LayerManager(self.iface)
         self.callback_first_start = callback_first_start
 
@@ -41,7 +43,7 @@ class FiveGLaVisualizationDevicePosition:
         self.fill_combo_box_device_ids()
         self.dlg.show()
         result = self.dlg.exec_()
-        self.clear_form()
+        self.dlg.btnShowDevicePosition.setEnabled(False)
         if result:
             pass
 
@@ -65,7 +67,11 @@ class FiveGLaVisualizationDevicePosition:
         :return: None
         """
         device_position_gateway = DevicePositionGateway()
-        transaction_ids = device_position_gateway.get_transaction_ids(self.dlg.cmbDeviceId.currentText())
+        selectedValue = self.dlg.cmbDeviceId.currentText()
+        if selectedValue == "":
+            self.custom_logger.log_info("No value selected! Probably during building the combo box.")
+            return
+        transaction_ids = device_position_gateway.get_transaction_ids(selectedValue)
 
         if transaction_ids is None:
             MessageBox.show_error_box("No connection to the database, the table does not exist or is empty!")
@@ -74,15 +80,6 @@ class FiveGLaVisualizationDevicePosition:
         UiHelper.combo_box_filler(transaction_ids, self.dlg.cmbTransactionId)
         self.dlg.btnShowDevicePosition.setEnabled(
             self.dlg.cmbTransactionId.count() > 0 and self.dlg.cmbDeviceId.count() > 0)
-
-    def clear_form(self):
-        """Clears the form
-
-        :return: None
-        """
-        self.dlg.cmbDeviceId.clear()
-        self.dlg.cmbTransactionId.clear()
-        self.dlg.btnShowDevicePosition.setEnabled(False)
 
     def show_device_position(self):
         """Shows the device position on the map
