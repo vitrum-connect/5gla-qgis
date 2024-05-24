@@ -157,22 +157,3 @@ class LayerManager:
         if len(layer_result_list) == 0:
             return None
         return layer_result_list[0]
-
-    def set_active_layer(self, layer_name):
-        project = QgsProject.instance()
-
-        layer = project.mapLayersByName(layer_name)
-        if not layer:
-            self.custom_logger.log_warning("Layer not found inside the QGIS Project!")
-            return
-
-        layer = layer[0]
-        layer_tree_view = self.iface.layerTreeView()
-        proxy_model = layer_tree_view.model()
-        source_model = proxy_model.sourceModel()
-        root = source_model.rootGroup()
-        node = root.findLayer(layer.id())
-        if node:
-            layer_tree_view.setCurrentLayer(layer)
-        else:
-            self.custom_logger.log_warning("Layer node for the layer not found!")

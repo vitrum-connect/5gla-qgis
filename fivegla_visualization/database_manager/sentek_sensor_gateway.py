@@ -24,10 +24,10 @@ class SentekSensorGateway:
         entity_ids = self.connection.extract_values(entity_ids_dict, "entityid")
         return entity_ids
 
-    def get_soil_moisture_measurements(self, entity_id, names_for_plot):
+    def get_soil_moisture_measurements(self, entity_id, name_column_values):
         """ Returns an array of all measurement for a given entity id
 
-        :param names_for_plot: The name values which should be selected
+        :param name_column_values: The Vales of the name column
         :param entity_id: The entity id
         :return: An array of all measurement for a given entity id or None if the connection is not established
         """
@@ -40,9 +40,9 @@ class SentekSensorGateway:
         sql_group = "entityid, datecreated, name, controlledproperty"
         measurements_dictionarys = []
 
-        for name_for_plot in names_for_plot:
-            sql_filter = "entityid = '{}' and name like '{}' and controlledproperty > 0".format(entity_id,
-                                                                                                name_for_plot)
+        for name_column_value in name_column_values:
+            sql_filter = "entityid = '{}' and name = '{}' and controlledproperty > 0".format(entity_id,
+                                                                                                name_column_value)
             measurement = self.connection.read_records(self.table_name, sql_select=sql_select,
                                                        sql_filter=sql_filter,
                                                        sql_order=sql_order, sql_group=sql_group)
