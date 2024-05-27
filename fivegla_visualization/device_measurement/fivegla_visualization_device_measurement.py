@@ -1,12 +1,13 @@
+from PyQt5.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from qgis.gui import QgsMapToolIdentifyFeature
+
+from .fivegla_visualization_device_measurement_dialog import FiveGLaVisualizationDeviceMeasurementDialog
 from ..constants import Constants
 from ..custom_logger import CustomLogger
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from .fivegla_visualization_device_measurement_dialog import FiveGLaVisualizationDeviceMeasurementDialog
+from ..database_manager import SentekSensorGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper, CustomFigure
-from qgis.gui import QgsMapTool, QgsMapToolIdentifyFeature
-from PyQt5.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView
-from ..database_manager import SentekSensorGateway
 
 
 class FiveGLaVisualizationDeviceMeasurement:
@@ -78,7 +79,7 @@ class FiveGLaVisualizationDeviceMeasurement:
         names_for_plot = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"]
         measurements = self.sentek_sensor_gateway.get_soil_moisture_measurements(selected_entity_id, names_for_plot)
         if not all(measurement for measurement in measurements):
-            CustomLogger.log_info("No measurements for the selected entity id!")
+            self.custom_logger.log_info("No measurements for the selected entity id!")
             MessageBox.show_info_box("No measurements for the selected entity id!")
             return
         x_title = "Date"

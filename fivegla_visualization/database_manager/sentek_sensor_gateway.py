@@ -1,5 +1,5 @@
-from ..custom_logger import CustomLogger
 from ..constants import Constants
+from ..custom_logger import CustomLogger
 from ..database_manager import DatabaseConnection
 
 
@@ -35,6 +35,10 @@ class SentekSensorGateway:
             self.custom_logger.log_warning("No connection to the database!")
             return None
 
+        if entity_id is None or name_column_values is None:
+            self.custom_logger.log_warning("Entity id or name column values not provided!")
+            return None
+
         sql_select = "entityid, datecreated, name, controlledproperty"
         sql_order = ("datecreated")
         sql_group = "entityid, datecreated, name, controlledproperty"
@@ -42,7 +46,7 @@ class SentekSensorGateway:
 
         for name_column_value in name_column_values:
             sql_filter = "entityid = '{}' and name = '{}' and controlledproperty > 0".format(entity_id,
-                                                                                                name_column_value)
+                                                                                             name_column_value)
             measurement = self.connection.read_records(self.table_name, sql_select=sql_select,
                                                        sql_filter=sql_filter,
                                                        sql_order=sql_order, sql_group=sql_group)

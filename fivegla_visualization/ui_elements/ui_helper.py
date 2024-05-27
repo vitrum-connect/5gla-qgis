@@ -1,4 +1,8 @@
 class UiHelper:
+    """This class provides helper methods for QT UI Components
+
+    """
+
     def __init__(self):
         pass
 
@@ -11,7 +15,6 @@ class UiHelper:
 
         :return: None
         """
-
         combo_box.clear()
         for item in items:
             combo_box.addItem(item)

@@ -1,4 +1,4 @@
-from  ..constants import Constants
+from ..constants import Constants
 from ..custom_logger import CustomLogger
 from ..database_manager import DatabaseConnection
 
@@ -33,11 +33,14 @@ class DevicePositionGateway:
         if not self.connection.test_connection():
             self.custom_logger.log_warning("No connection to the database!")
             return None
+        if device_id is None:
+            self.custom_logger.log_warning("No device id provided!")
+            return None
         sql_select = "DISTINCT transactionid"
         sql_filter = "deviceid = '{}'".format(device_id)
         sql_order = "transactionid"
         transaction_ids_dict = self.connection.read_records(self.table_name, sql_filter=sql_filter,
-                                                                  sql_select=sql_select, sql_order=sql_order)
+                                                            sql_select=sql_select, sql_order=sql_order)
         transaction_ids = self.connection.extract_values(transaction_ids_dict, "transactionid")
         return transaction_ids
 
@@ -51,12 +54,15 @@ class DevicePositionGateway:
         if not self.connection.test_connection():
             self.custom_logger.log_warning("No connection to the database!")
             return None
+        if device_id is None or transaction_id is None:
+            self.custom_logger.log_warning("No device id or transaction id provided!")
+            return None
         sql_select = "entityid"
         sql_filter = "deviceid = '{}' AND transactionid = '{}'".format(device_id, transaction_id)
         sql_order = "datecreated DESC LIMIT 1"
         entity_id_dict = self.connection.read_records(self.table_name, sql_filter=sql_filter,
-                                                            sql_select=sql_select,
-                                                            sql_order=sql_order)
+                                                      sql_select=sql_select,
+                                                      sql_order=sql_order)
         entity_ids = self.connection.extract_values(entity_id_dict, "entityid")
         if entity_ids is None:
             self.custom_logger.log_info("No Entity ID found for the given device id and transaction id!")

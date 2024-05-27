@@ -1,13 +1,19 @@
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import math
+
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 from dateutil.parser import parse
+
+from ..custom_logger import CustomLogger
 
 
 class CustomFigure:
+    """ CustomFigure class to create custom figures
+
+    """
 
     @staticmethod
-    def create_figure(values, labels, x_title, y_title, fontsize=20, dpi=600, group_size=3):
+    def create_figure(values, labels, x_title="X-Axis", y_title="Y-Axis", fontsize=20, dpi=600, group_size=3):
         """ Create a figure with subplots for the soil moisture data
 
         :param values: The values of the measurements
@@ -17,7 +23,14 @@ class CustomFigure:
         :param fontsize: The fontsize of the labels
         :return: The figure
         """
-        count_subplots = math.ceil(len(values) / group_size)
+        logger = CustomLogger()
+        if len(values) == 0 or len(labels) == 0:
+            logger.log_warning('The values and/or labels are empty')
+            return None
+        if values is None or labels is None:
+            logger.log_warning('The values and/or labels are None')
+            return None
+        count_subplots = math.ceil(len(values) // group_size)
         fig, axs = plt.subplots(count_subplots, figsize=(15, 20), dpi=dpi, sharex=True)
         fig.text(0.5, 0.04, x_title, ha='center', va='center', fontsize=20)
         fig.text(0.06, 0.5, y_title, ha='center', va='center', rotation='vertical', fontsize=fontsize)
@@ -39,5 +52,4 @@ class CustomFigure:
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y %H:%M'))
             ax.tick_params(axis='x', rotation=45, labelsize=fontsize)
             ax.tick_params(axis='y', labelsize=fontsize)
-
         return fig

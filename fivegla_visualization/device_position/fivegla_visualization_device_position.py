@@ -1,11 +1,10 @@
-from qgis.PyQt.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton
 
 from .fivegla_visualization_device_position_dialog import FiveGLaVisualizationDevicePositionDialog
+from ..custom_logger import CustomLogger
 from ..database_manager import DevicePositionGateway
 from ..layer_manager import LayerManager
-from ..ui_elements import MessageBox
-from ..ui_elements import UiHelper
-from ..custom_logger import CustomLogger
+from ..ui_elements import MessageBox, UiHelper
 
 
 class FiveGLaVisualizationDevicePosition:

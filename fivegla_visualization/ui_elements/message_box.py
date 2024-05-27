@@ -2,7 +2,8 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 
 class MessageBox:
-    """ MessageBox class to show error and info messages
+    """ MessageBox class to show custom message boxes
+
     """
 
     @staticmethod

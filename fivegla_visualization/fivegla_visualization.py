@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import os.path
+
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .resources import *
-import os.path
+from .constants import Constants
 from .database_manager import DatabaseConnection
-from .settings import FiveGLaVisualizationSettings
 from .device_measurement import FiveGLaVisualizationDeviceMeasurement
 from .device_position import FiveGLaVisualizationDevicePosition
-from .constants import Constants
+from .resources import *
+from .settings import FiveGLaVisualizationSettings
 
 
 class FiveGLaVisualization:

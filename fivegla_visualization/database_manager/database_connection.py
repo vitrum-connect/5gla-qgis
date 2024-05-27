@@ -95,7 +95,7 @@ class DatabaseConnection:
             self.connection.close()
             print("Database connection closed.")
 
-    def read_records(self, table_name, sql_filter=None, sql_select=None, sql_order=None,sql_group=None):
+    def read_records(self, table_name, sql_filter=None, sql_select=None, sql_order=None, sql_group=None):
         """ Reads records from a table using a filter and a selection
 
         :param sql_select: Columns to select
@@ -106,6 +106,9 @@ class DatabaseConnection:
         """
         if self.connection is None:
             self._create_connection()
+        if table_name is None or table_name == "":
+            self.custom_logger.log_warning("Table name is not provided.")
+            return None
         # noinspection PyBroadException
         try:
             if sql_select is not None:
@@ -126,8 +129,6 @@ class DatabaseConnection:
             if sql_order is not None:
                 query_order = "ORDER BY {} ".format(sql_order)
                 query += query_order
-
-
 
             # Führe die SQL-Abfrage aus
             cursor = self.connection.cursor()
