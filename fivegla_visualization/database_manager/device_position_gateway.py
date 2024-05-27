@@ -49,7 +49,8 @@ class DevicePositionGateway:
 
         :param device_id: The device id
         :param transaction_id: The transaction id
-        :return: The entitityid of the latest device position for a given device id and transaction id or None if the connection is not established
+        :return: The entitityid of the latest device position for a given device id and transaction id or
+            None if the connection is not established
         """
         if not self.connection.test_connection():
             self.custom_logger.log_warning("No connection to the database!")
