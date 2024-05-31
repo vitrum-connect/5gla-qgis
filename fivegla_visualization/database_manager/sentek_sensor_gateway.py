@@ -25,7 +25,7 @@ class SentekSensorGateway:
         return entity_ids
 
     def get_soil_moisture_measurements(self, entity_id, name_column_values):
-        """ Returns an array of all measurement for a given entity id
+        """ Returns an array of all measurements for a given entity id
 
         :param name_column_values: The Vales of the name column
         :param entity_id: The entity id
