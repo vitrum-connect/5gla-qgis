@@ -40,7 +40,7 @@ class SentekSensorGateway:
             return None
 
         sql_select = "entityid, datecreated, name, controlledproperty"
-        sql_order = ("datecreated")
+        sql_order = "datecreated"
         sql_group = "entityid, datecreated, name, controlledproperty"
         measurements_dictionarys = []
 
