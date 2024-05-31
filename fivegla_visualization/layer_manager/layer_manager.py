@@ -5,7 +5,7 @@ from fivegla_visualization.database_manager import DatabaseConnection
 
 
 class LayerManager:
-    def __init__(self):
+    def __init__(self, iface):
         self.custom_logger = CustomLogger()
         config = DatabaseConnection().get_config()
         self.uri = QgsDataSourceUri()
@@ -15,6 +15,7 @@ class LayerManager:
                                config['dbname'],
                                config['user'],
                                config['password'])
+        self.iface = iface
 
     def select_layer(self, table_name, geometry_column):
         """ Selects a PostGis Table as QGIS Layer to the MapCanvas
@@ -23,6 +24,9 @@ class LayerManager:
         :param geometry_column: The column which has the geometry information
         :return: A boolean that indicates whether the layer was selected successful
         """
+        if table_name is None or geometry_column is None:
+            self.custom_logger.log_warning("Table name or geometry column is None!")
+            return None
         self.uri.setTable(table_name)
         self.uri.setGeometryColumn(geometry_column)
         self.uri.setSchema(self.schema)
@@ -39,6 +43,9 @@ class LayerManager:
         :param geometry_column: The column with the geometry information
         :return: A boolean that indicates whether the layer was added successful
         """
+        if table_name is None or geometry_column is None:
+            self.custom_logger.log_warning("Table name or geometry column is None!")
+            return False
         selected_layer = self.select_layer(table_name, geometry_column)
         if selected_layer is None:
             return False
@@ -71,6 +78,9 @@ class LayerManager:
         :param entity_id: The id of the entity
         :return: A boolean that indicates whether the layer was selected successful
         """
+        if table_name is None or geometry_column is None or entity_id is None:
+            self.custom_logger.log_warning("Table name, geometry column or entity id is None!")
+            return None
         layer = self.select_layer(table_name, geometry_column)
         if layer is None:
             self.custom_logger.log_warning("Layer is None!")
@@ -86,16 +96,19 @@ class LayerManager:
         return self.add_layer("device_position", "location")
 
     @staticmethod
-    def create_copy_of_layer(source_layer, layer_name):
+    def create_copy_of_layer(source_layer, layer_name="Copy of Layer"):
         """ Creates an empty copy of a layer
 
         :param source_layer: The source layer
         :param layer_name: The name of the target layer
         :return: The target layer with the structure of the source layer or None if the source layer is invalid
         """
+        logger = CustomLogger()
         if source_layer is None:
+            logger.log_warning("Source layer is not provided!")
             return None
         if not source_layer.isValid():
+            logger.log_warning("Source layer is invalid!")
             return None
         target_layer = QgsVectorLayer("Point?crs=epsg:4326", layer_name, "memory")
         target_layer.startEditing()
@@ -111,7 +124,7 @@ class LayerManager:
         """
         if layer is None:
             # Logging
-            self.custom_logger.log_warning("Layer is None!")
+            self.custom_logger.log_warning("Layer is not provided!")
             return False
         if not layer.isValid():
             # Logging
@@ -127,23 +140,18 @@ class LayerManager:
 
         :return: A boolean that indicates whether the layer was added successful
         """
+        if entity_id is None:
+            self.custom_logger.log_warning("Entity id is not provided!")
+            return False
         memory_layer_name = "Latest Device Position"
-        project = QgsProject.instance()
-        layer_result_list = project.mapLayersByName(memory_layer_name)
-
-        # Creating a new layer if there is no layer with the name "Latest Device Position"
-        if len(layer_result_list) == 0:
-            latest_device_position_layer = None
-        else:
-            latest_device_position_layer = layer_result_list[0]
+        latest_device_position_layer = self.select_layer_from_qgis_project(memory_layer_name)
+        if latest_device_position_layer is not None:
             self.clear_layer(latest_device_position_layer)
 
-        # Initializing the layer if it is not initialized
         if latest_device_position_layer is None:
             device_position_layer = self.select_layer("device_position", "location")
             latest_device_position_layer = self.create_copy_of_layer(device_position_layer, memory_layer_name)
 
-        # Selecting the feature from the device position layer with the given entity id
         feature = self.select_feature("device_position", "location", entity_id)
         if feature is None:
             # Logging
@@ -152,3 +160,18 @@ class LayerManager:
         self.add_feature(latest_device_position_layer, feature)
         QgsProject.instance().addMapLayer(latest_device_position_layer)
         return True
+
+    def select_layer_from_qgis_project(self, layer_name):
+        """ Selects a layer from the QGS Project
+
+        :param layer_name: The name of the layer
+        :return: The layer or None if the layer was not found
+        """
+        if layer_name is None:
+            self.custom_logger.log_warning("Layer name is not provided!")
+            return None
+        project = QgsProject.instance()
+        layer_result_list = project.mapLayersByName(layer_name)
+        if len(layer_result_list) == 0:
+            return None
+        return layer_result_list[0]

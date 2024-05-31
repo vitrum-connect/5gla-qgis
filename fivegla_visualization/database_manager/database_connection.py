@@ -32,6 +32,20 @@ class DatabaseConnection:
     def __del__(self):
         self._close()
 
+    @staticmethod
+    def extract_values(records, key):
+        """ Extracts values for a specific key from a list of dictionaries
+
+        :param records: The list of dictionaries
+        :param key: The key to extract values for
+        :return: A list of values for the specified key
+        """
+        if records is None:
+            return None
+        if len(records) == 0:
+            return None
+        return [record[key] for record in records]
+
     def get_config(self):
         """ Gets the configuration from the config file or creates a new one
 
@@ -81,17 +95,20 @@ class DatabaseConnection:
             self.connection.close()
             print("Database connection closed.")
 
-    def read_records(self, table_name, sql_filter=None, sql_select=None, sql_order=None):
+    def read_records(self, table_name, sql_filter=None, sql_select=None, sql_order=None, sql_group=None):
         """ Reads records from a table using a filter and a selection
 
         :param sql_select: Columns to select
         :param table_name: Name of table
         :param sql_filter: Filter selection
         :param sql_order: Order selection
-        :return: A list of records or None
+        :return: A list of dictionaries with the records or None if the connection is not established
         """
         if self.connection is None:
             self._create_connection()
+        if table_name is None or table_name == "":
+            self.custom_logger.log_warning("Table name is not provided.")
+            return None
         # noinspection PyBroadException
         try:
             if sql_select is not None:
@@ -105,15 +122,20 @@ class DatabaseConnection:
                 query_filter = "WHERE {} ".format(sql_filter)
                 query += query_filter
 
+            if sql_group is not None:
+                query_group = "GROUP BY {} ".format(sql_group)
+                query += query_group
+
             if sql_order is not None:
-                query_order = "ORDER BY {}".format(sql_order)
+                query_order = "ORDER BY {} ".format(sql_order)
                 query += query_order
 
             # Führe die SQL-Abfrage aus
             cursor = self.connection.cursor()
             cursor.execute(query)
-            records_tuple = cursor.fetchall()
-            records = [list(record) for record in records_tuple]
+
+            column_names = [desc[0] for desc in cursor.description]
+            records = [dict(zip(column_names, record)) for record in cursor.fetchall()]
             cursor.close()
             return records
 

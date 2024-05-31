@@ -1,9 +1,10 @@
-from qgis.PyQt.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton
 
 from .fivegla_visualization_device_position_dialog import FiveGLaVisualizationDevicePositionDialog
+from ..custom_logger import CustomLogger
 from ..database_manager import DevicePositionGateway
 from ..layer_manager import LayerManager
-from ..ui_elements import MessageBox
+from ..ui_elements import MessageBox, UiHelper
 
 
 class FiveGLaVisualizationDevicePosition:
@@ -19,6 +20,8 @@ class FiveGLaVisualizationDevicePosition:
         self.dlg = None
         self.iface = iface
         self.first_start = True
+        self.custom_logger = CustomLogger()
+        self.layer_manager = LayerManager(self.iface)
         self.callback_first_start = callback_first_start
 
     def run(self):
@@ -39,22 +42,9 @@ class FiveGLaVisualizationDevicePosition:
         self.fill_combo_box_device_ids()
         self.dlg.show()
         result = self.dlg.exec_()
-        self.clear_form()
+        self.dlg.btnShowDevicePosition.setEnabled(False)
         if result:
             pass
-
-    @staticmethod
-    def combo_box_filler(items, combo_box):
-        """Fills the combo box with the given items
-
-        :param items: The items to fill the combo box with
-        :param combo_box: The combo box to fill
-
-        :return: None
-        """
-        combo_box.clear()
-        for item in items:
-            combo_box.addItem(item)
 
     def fill_combo_box_device_ids(self):
         """Fills the combo box with the device ids
@@ -63,11 +53,12 @@ class FiveGLaVisualizationDevicePosition:
         """
         device_position_gateway = DevicePositionGateway()
         device_ids = device_position_gateway.get_device_ids()
+
         if device_ids is None:
-            message_box = MessageBox()
-            message_box.show_error_box("No connection to the database, the table does not exist or is empty!")
+            MessageBox.show_error_box("No connection to the database, the table does not exist or is empty!")
             return
-        self.combo_box_filler(device_ids, self.dlg.cmbDeviceId)
+
+        UiHelper.combo_box_filler(device_ids, self.dlg.cmbDeviceId)
 
     def fill_combo_box_transaction_ids(self):
         """Fills the combo box with the transaction ids
@@ -75,23 +66,19 @@ class FiveGLaVisualizationDevicePosition:
         :return: None
         """
         device_position_gateway = DevicePositionGateway()
-        transaction_ids = device_position_gateway.get_transaction_ids(self.dlg.cmbDeviceId.currentText())
-        if transaction_ids is None:
-            message_box = MessageBox()
-            message_box.show_error_box("No connection to the database, the table does not exist or is empty!")
+        selectedValue = self.dlg.cmbDeviceId.currentText()
+        if selectedValue == "":
+            self.custom_logger.log_info("No value selected! Probably during building the combo box.")
             return
-        self.combo_box_filler(transaction_ids, self.dlg.cmbTransactionId)
+        transaction_ids = device_position_gateway.get_transaction_ids(selectedValue)
+
+        if transaction_ids is None:
+            MessageBox.show_error_box("No connection to the database, the table does not exist or is empty!")
+            return
+
+        UiHelper.combo_box_filler(transaction_ids, self.dlg.cmbTransactionId)
         self.dlg.btnShowDevicePosition.setEnabled(
             self.dlg.cmbTransactionId.count() > 0 and self.dlg.cmbDeviceId.count() > 0)
-
-    def clear_form(self):
-        """Clears the form
-
-        :return: None
-        """
-        self.dlg.cmbDeviceId.clear()
-        self.dlg.cmbTransactionId.clear()
-        self.dlg.btnShowDevicePosition.setEnabled(False)
 
     def show_device_position(self):
         """Shows the device position on the map
@@ -102,12 +89,9 @@ class FiveGLaVisualizationDevicePosition:
         entity_id = device_position_gateway.get_latest_device_position(self.dlg.cmbDeviceId.currentText(),
                                                                        self.dlg.cmbTransactionId.currentText())
         if entity_id is None:
-            message_box = MessageBox()
-            message_box.show_error_box("No connection to the database!")
+            MessageBox.show_error_box("No connection to the database!")
             return
-        layer_manager = LayerManager()
-        entity_exists = layer_manager.show_device_position(entity_id)
+        entity_exists = self.layer_manager.show_device_position(entity_id)
         if not entity_exists:
-            message_box = MessageBox()
-            message_box.show_error_box("The entity does not exist!")
+            MessageBox.show_error_box("The entity does not exist!")
             return

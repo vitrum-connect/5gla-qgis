@@ -2,41 +2,45 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 
 class MessageBox:
-    """ MessageBox class to show error and info messages
+    """ MessageBox class to show custom message boxes
+
     """
 
-    def __init__(self):
-        self.msg_box = QMessageBox()
-
-    def show_conditional_box(self, condition, info_message, error_message):
+    @staticmethod
+    def show_conditional_box(condition, info_message, error_message):
         """ Shows a message box based on the condition
         """
         if condition:
-            self.show_info_box(info_message)
+            MessageBox.show_info_box(info_message)
         else:
-            self.show_error_box(error_message)
+            MessageBox.show_error_box(error_message)
 
-    def show_error_box(self, error_message):
+    @staticmethod
+    def show_error_box(error_message):
         """ Shows an error message box
 
         :param error_message:
         :return:  None
         """
-        self.msg_box.setWindowTitle("Error")
-        self.msg_box.setIcon(QMessageBox.Critical)
-        self.msg_box.setText(error_message)
-        ok_button = self.msg_box.addButton(QMessageBox.Ok)
-        ok_button.setDefault(True)
-        self.msg_box.exec_()
+        msg_box = QMessageBox()
 
-    def show_info_box(self, info_message):
+        msg_box.setWindowTitle("Error")
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setText(error_message)
+        ok_button = msg_box.addButton(QMessageBox.Ok)
+        ok_button.setDefault(True)
+        msg_box.exec_()
+
+    @staticmethod
+    def show_info_box(info_message):
         """ Shows an information message box
         :param info_message:
         :return: None
         """
-        self.msg_box.setWindowTitle("Information")
-        self.msg_box.setIcon(QMessageBox.Information)
-        self.msg_box.setText(info_message)
-        ok_button = self.msg_box.addButton(QMessageBox.Ok)
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("Information")
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.setText(info_message)
+        ok_button = msg_box.addButton(QMessageBox.Ok)
         ok_button.setDefault(True)
-        self.msg_box.exec_()
+        msg_box.exec_()

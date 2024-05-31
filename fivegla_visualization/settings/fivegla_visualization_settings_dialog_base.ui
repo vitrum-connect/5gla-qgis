@@ -1,282 +1,282 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>fivegla_visualization_settings_DialogBase</class>
- <widget class="QDialog" name="fivegla_visualization_settings_DialogBase">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>313</width>
-    <height>278</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>5GLa Visualization Settings</string>
-  </property>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>295</width>
-     <height>260</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>8</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="title">
-    <string>Database Connection</string>
-   </property>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>66</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Port:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>36</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Host:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>96</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Datenbank:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>126</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Schema:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>156</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Username:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>186</y>
-      <width>80</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Password:</string>
-    </property>
-   </widget>
-   <widget class="QgsPasswordLineEdit" name="passwordline">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>180</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textlineHost">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>30</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textlinePort">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>60</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textlineDatabase">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>90</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textlineSchema">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>120</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textlineUsername">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>150</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSaveDbCredentials">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>220</y>
-      <width>160</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Apply</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>218</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save &amp; Test:</string>
-    </property>
-   </widget>
-   <zorder>passwordline</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_6</zorder>
-   <zorder>textlineHost</zorder>
-   <zorder>textlinePort</zorder>
-   <zorder>textlineDatabase</zorder>
-   <zorder>textlineSchema</zorder>
-   <zorder>textlineUsername</zorder>
-   <zorder>btnSaveDbCredentials</zorder>
-   <zorder>label_7</zorder>
-  </widget>
- </widget>
- <customwidgets>
-  <customwidget>
-   <class>QgsPasswordLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>qgspasswordlineedit.h</header>
-  </customwidget>
- </customwidgets>
- <tabstops>
-  <tabstop>textlineHost</tabstop>
-  <tabstop>textlinePort</tabstop>
-  <tabstop>textlineDatabase</tabstop>
-  <tabstop>textlineSchema</tabstop>
-  <tabstop>textlineUsername</tabstop>
-  <tabstop>passwordline</tabstop>
-  <tabstop>btnSaveDbCredentials</tabstop>
- </tabstops>
- <resources/>
- <connections/>
+    <class>fivegla_visualization_settings_DialogBase</class>
+    <widget class="QDialog" name="fivegla_visualization_settings_DialogBase">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>313</width>
+                <height>278</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>5GLa Visualization Settings</string>
+        </property>
+        <widget class="QGroupBox" name="groupBox">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>295</width>
+                    <height>260</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="title">
+                <string>Database Connection</string>
+            </property>
+            <widget class="QLabel" name="label_2">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>66</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Port:</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>36</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Host:</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label_3">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>96</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Datenbank:</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label_4">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>126</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Schema:</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label_5">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>156</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Username:</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label_6">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>186</y>
+                        <width>80</width>
+                        <height>16</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Password:</string>
+                </property>
+            </widget>
+            <widget class="QgsPasswordLineEdit" name="passwordline">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>180</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="textlineHost">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>30</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="textlinePort">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>60</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="textlineDatabase">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>90</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="textlineSchema">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>120</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="textlineUsername">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>150</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QPushButton" name="btnSaveDbCredentials">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>220</y>
+                        <width>160</width>
+                        <height>27</height>
+                    </rect>
+                </property>
+                <property name="font">
+                    <font>
+                        <pointsize>8</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                    </font>
+                </property>
+                <property name="text">
+                    <string>Apply</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="label_7">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>218</y>
+                        <width>101</width>
+                        <height>31</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Save &amp; Test:</string>
+                </property>
+            </widget>
+            <zorder>passwordline</zorder>
+            <zorder>label_2</zorder>
+            <zorder>label</zorder>
+            <zorder>label_3</zorder>
+            <zorder>label_4</zorder>
+            <zorder>label_5</zorder>
+            <zorder>label_6</zorder>
+            <zorder>textlineHost</zorder>
+            <zorder>textlinePort</zorder>
+            <zorder>textlineDatabase</zorder>
+            <zorder>textlineSchema</zorder>
+            <zorder>textlineUsername</zorder>
+            <zorder>btnSaveDbCredentials</zorder>
+            <zorder>label_7</zorder>
+        </widget>
+    </widget>
+    <customwidgets>
+        <customwidget>
+            <class>QgsPasswordLineEdit</class>
+            <extends>QLineEdit</extends>
+            <header>qgspasswordlineedit.h</header>
+        </customwidget>
+    </customwidgets>
+    <tabstops>
+        <tabstop>textlineHost</tabstop>
+        <tabstop>textlinePort</tabstop>
+        <tabstop>textlineDatabase</tabstop>
+        <tabstop>textlineSchema</tabstop>
+        <tabstop>textlineUsername</tabstop>
+        <tabstop>passwordline</tabstop>
+        <tabstop>btnSaveDbCredentials</tabstop>
+    </tabstops>
+    <resources/>
+    <connections/>
 </ui>
