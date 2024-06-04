@@ -2,6 +2,7 @@ import math
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import numpy as np
 from dateutil.parser import parse
 
 from ..custom_logger import CustomLogger
@@ -39,8 +40,7 @@ class CustomFigure:
         # Define the groups of measurements for each subplot
 
         groups = [values[i:i + group_size] for i in range(0, len(values), group_size)]
-        # Checks if AXS is a list or not, if not it will be converted to a list
-        if not isinstance(axs, list):
+        if not isinstance(axs, (list, np.ndarray)):
             axs = [axs]
         for i, group in enumerate(groups):
             ax = axs[i]
