@@ -3,10 +3,10 @@ from ..custom_logger import CustomLogger
 from ..database_manager import DatabaseConnection
 
 
-class SentekSensorGateway:
-    def __init__(self):
+class SoilMoistureSensorGateway:
+    def __init__(self,table_name):
         self.connection = DatabaseConnection()
-        self.table_name = Constants.SENTEK_SENSOR_TABLE_NAME
+        self.table_name = table_name
         self.custom_logger = CustomLogger()
 
     def get_entity_ids(self):

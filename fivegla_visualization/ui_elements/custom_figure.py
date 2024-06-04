@@ -39,7 +39,9 @@ class CustomFigure:
         # Define the groups of measurements for each subplot
 
         groups = [values[i:i + group_size] for i in range(0, len(values), group_size)]
-
+        # Checks if AXS is a list or not, if not it will be converted to a list
+        if not isinstance(axs, list):
+            axs = [axs]
         for i, group in enumerate(groups):
             ax = axs[i]
             for j, measurement in enumerate(group):

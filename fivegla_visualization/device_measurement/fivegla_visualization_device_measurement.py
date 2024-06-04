@@ -5,7 +5,7 @@ from qgis.gui import QgsMapToolIdentifyFeature
 from .fivegla_visualization_device_measurement_dialog import FiveGLaVisualizationDeviceMeasurementDialog
 from ..constants import Constants
 from ..custom_logger import CustomLogger
-from ..database_manager import SentekSensorGateway
+from ..database_manager import SoilMoistureSensorGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper, CustomFigure
 
@@ -19,11 +19,14 @@ class FiveGLaVisualizationDeviceMeasurement:
         self.first_start = True
         self.iface = iface
         self.callback_first_start = callback_first_start
-        self.sentek_sensor_gateway = SentekSensorGateway()
+        self.agvolution_sensor_gateway = SoilMoistureSensorGateway(Constants.AGVOLUTION_SENSOR_TABLE_NAME)
+        self.sentek_sensor_gateway = SoilMoistureSensorGateway(Constants.SENTEK_SENSOR_TABLE_NAME)
         self.layer_manager = LayerManager(self.iface)
         self.custom_logger = CustomLogger()
         self.canvas = self.iface.mapCanvas()
         self.tool = QgsMapToolIdentifyFeature(self.canvas)
+        self.sentek_entity_ids = None
+        self.agvolution_entity_ids = None
 
     def run(self):
         """ Create the dialog with elements (after translation) and keep reference
@@ -63,10 +66,12 @@ class FiveGLaVisualizationDeviceMeasurement:
 
         :return: None
         """
-        entity_ids = self.sentek_sensor_gateway.get_entity_ids()
-        if entity_ids is None:
+        self.sentek_entity_ids = self.sentek_sensor_gateway.get_entity_ids()
+        self.agvolution_entity_ids = self.agvolution_sensor_gateway.get_entity_ids()
+        if self.sentek_entity_ids is None and self.agvolution_entity_ids is None:
             MessageBox.show_error_box("No connection to the database, the table does not exist or is empty!")
             return
+        entity_ids = self.sentek_entity_ids + self.agvolution_entity_ids
         UiHelper.combo_box_filler(entity_ids, self.dlg.cmbEntityId)
 
     def draw(self):
@@ -76,8 +81,27 @@ class FiveGLaVisualizationDeviceMeasurement:
         """
 
         selected_entity_id = self.dlg.cmbEntityId.currentText()
-        names_for_plot = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"]
-        measurements = self.sentek_sensor_gateway.get_soil_moisture_measurements(selected_entity_id, names_for_plot)
+        isSentekSensor = False
+        isAgvolutionSensor = False
+        names_for_plot = []
+        if selected_entity_id in self.sentek_entity_ids and selected_entity_id in self.agvolution_entity_ids:
+            self.custom_logger.log_info("The selected entity id is in both manufactor Tables and therefore not unique")
+            MessageBox.show_info_box("The selected entity id is in both manufactor Tables and therefore not unique")
+            return
+        if selected_entity_id in self.sentek_entity_ids:
+            isSentekSensor = True
+        elif selected_entity_id in self.agvolution_entity_ids:
+            isAgvolutionSensor = True
+        measurements = []
+        if isSentekSensor:
+            names_for_plot = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"]
+            measurements = self.sentek_sensor_gateway.get_soil_moisture_measurements(selected_entity_id, names_for_plot)
+            group_size = 3
+        if isAgvolutionSensor:
+            names_for_plot = ["humidity"]
+            measurements = self.agvolution_sensor_gateway.get_soil_moisture_measurements(selected_entity_id,
+                                                                                         names_for_plot)
+        group_size = 1
         if not all(measurement for measurement in measurements):
             self.custom_logger.log_info("No measurements for the selected entity id!")
             MessageBox.show_info_box("No measurements for the selected entity id!")
@@ -85,9 +109,9 @@ class FiveGLaVisualizationDeviceMeasurement:
         x_title = "Date"
         y_title = "Soil Moisture [%]"
         fontsize = 20
-        group_size = 3
+        group_size = 1
         figure = CustomFigure.create_figure(measurements, names_for_plot, x_title, y_title, fontsize=fontsize,
-                                            group_size=group_size)
+                                                group_size=group_size)
         canvas = FigureCanvas(figure)
         proxy_widget = self.dlg.scene.addWidget(canvas)
         self.dlg.plotView.setScene(self.dlg.scene)

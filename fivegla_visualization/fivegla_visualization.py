@@ -146,7 +146,7 @@ class FiveGLaVisualization:
 
         icon_settings = ':/plugins/fivegla_visualization/icons/settings.png'
         settings_action_text = u'Settings'
-        fivegla_visualization_settings = FiveGLaVisualizationSettings(self.iface, self.first_start)
+        fivegla_visualization_settings = FiveGLaVisualizationSettings(self.iface, self.handle_first_start)
         self.add_action(
             icon_settings,
             text=self.tr(settings_action_text),
@@ -154,7 +154,7 @@ class FiveGLaVisualization:
             add_to_toolbar=False,
             parent=self.iface.mainWindow())
 
-        fivegla_visualization_device_position = FiveGLaVisualizationDevicePosition(self.iface, self.first_start)
+        fivegla_visualization_device_position = FiveGLaVisualizationDevicePosition(self.iface, self.handle_first_start)
         icon_device_position = ':/plugins/fivegla_visualization/icons/drone.png'
         device_position_action_text = u'Device Position'
         self.add_action(
@@ -164,7 +164,8 @@ class FiveGLaVisualization:
             add_to_toolbar=True,
             parent=self.iface.mainWindow())
 
-        fivegla_visualization_device_measurement = FiveGLaVisualizationDeviceMeasurement(self.iface, self.first_start)
+        fivegla_visualization_device_measurement = FiveGLaVisualizationDeviceMeasurement(self.iface,
+                                                                                         self.handle_first_start)
         icon_device_measurement = ':/plugins/fivegla_visualization/icons/sensor.png'
         device_measurement_action_text = u'Device Measurement'
         self.add_action(
@@ -185,7 +186,7 @@ class FiveGLaVisualization:
                 action)
             self.iface.removeToolBarIcon(action)
 
-    def first_start(self):
+    def handle_first_start(self):
         """ The method ensures that all dependencies are correctly initialized and declared
 
         :return: None
