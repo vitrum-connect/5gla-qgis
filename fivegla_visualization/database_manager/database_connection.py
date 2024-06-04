@@ -102,6 +102,7 @@ class DatabaseConnection:
         :param table_name: Name of table
         :param sql_filter: Filter selection
         :param sql_order: Order selection
+        :param sql_group: Group selection
         :return: A list of dictionaries with the records or None if the connection is not established
         """
         if self.connection is None:

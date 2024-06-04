@@ -7,7 +7,6 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
 from .constants import Constants
-from .database_manager import DatabaseConnection
 from .device_measurement import FiveGLaVisualizationDeviceMeasurement
 from .device_position import FiveGLaVisualizationDevicePosition
 from .resources import *
