@@ -93,6 +93,7 @@ class FiveGLaVisualizationDeviceMeasurement:
         elif selected_entity_id in self.agvolution_entity_ids:
             isAgvolutionSensor = True
         measurements = []
+        group_size = 1
         if isSentekSensor:
             names_for_plot = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"]
             measurements = self.sentek_sensor_gateway.get_soil_moisture_measurements(selected_entity_id, names_for_plot)
@@ -101,17 +102,20 @@ class FiveGLaVisualizationDeviceMeasurement:
             names_for_plot = ["humidity"]
             measurements = self.agvolution_sensor_gateway.get_soil_moisture_measurements(selected_entity_id,
                                                                                          names_for_plot)
-        group_size = 1
+            group_size = 1
         if not all(measurement for measurement in measurements):
             self.custom_logger.log_info("No measurements for the selected entity id!")
             MessageBox.show_info_box("No measurements for the selected entity id!")
+
             return
         x_title = "Date"
         y_title = "Soil Moisture [%]"
         fontsize = 20
-        group_size = 1
-        figure = CustomFigure.create_figure(measurements, names_for_plot, x_title, y_title, fontsize=fontsize,
-                                                group_size=group_size)
+        figure = CustomFigure.create_figure(measurements, names_for_plot, x_title, y_title, fontsize=fontsize,group_size=group_size)
+        if figure is None:
+            self.custom_logger.log_warning("The figure could not be created!")
+            MessageBox.show_error_box("The figure could not be created!")
+            return
         canvas = FigureCanvas(figure)
         proxy_widget = self.dlg.scene.addWidget(canvas)
         self.dlg.plotView.setScene(self.dlg.scene)

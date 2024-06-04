@@ -14,7 +14,7 @@ class CustomFigure:
     """
 
     @staticmethod
-    def create_figure(values, labels, x_title="X-Axis", y_title="Y-Axis", fontsize=20, dpi=600, group_size=3):
+    def create_figure(values, labels, x_title="X-Axis", y_title="Y-Axis", fontsize=20, dpi=600, group_size=1):
         """ Create a figure with subplots for the soil moisture data
 
         :param values: The values of the measurements
@@ -31,6 +31,9 @@ class CustomFigure:
         if values is None or labels is None:
             logger.log_warning('The values and/or labels are None')
             return None
+        if not (len(values) // group_size) >= 1:
+            logger.log_warning('The number of subplots is higher than the number of Axes')
+            return None
         count_subplots = math.ceil(len(values) // group_size)
         fig, axs = plt.subplots(count_subplots, figsize=(15, 20), dpi=dpi, sharex=True)
         fig.text(0.5, 0.04, x_title, ha='center', va='center', fontsize=20)
@@ -38,10 +41,9 @@ class CustomFigure:
         min_value = min(d['controlledproperty'] for sublist in values for d in sublist)
         max_value = max(d['controlledproperty'] for sublist in values for d in sublist)
         # Define the groups of measurements for each subplot
-
-        groups = [values[i:i + group_size] for i in range(0, len(values), group_size)]
         if not isinstance(axs, (list, np.ndarray)):
             axs = [axs]
+        groups = [values[i:i + group_size] for i in range(0, len(values), group_size)]
         for i, group in enumerate(groups):
             ax = axs[i]
             for j, measurement in enumerate(group):
