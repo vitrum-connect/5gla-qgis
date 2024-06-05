@@ -96,10 +96,10 @@ class FiveGLaVisualizationDeviceMeasurement:
             measurements = self.sentek_sensor_gateway.get_soil_moisture_measurements(selected_entity_id, names_for_plot)
             group_size = 3
         if is_agvolution_sensor:
-            names_for_plot = ["ENV_SOIL_VWC"]
+            names_for_plot = ["-10|ENV__SOIL__VWC", "-30|ENV__SOIL__VWC", "-45|ENV__SOIL__VWC"]
             measurements = self.agvolution_sensor_gateway.get_soil_moisture_measurements(selected_entity_id,
                                                                                          names_for_plot)
-            group_size = 1
+            group_size = 3
         if not all(measurement for measurement in measurements):
             self.custom_logger.log_info("No measurements for the selected entity id!")
             MessageBox.show_info_box("No measurements for the selected entity id!")
