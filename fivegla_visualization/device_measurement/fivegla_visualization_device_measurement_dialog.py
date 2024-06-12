@@ -2,6 +2,7 @@ import os
 
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
+from qgis.PyQt.QtCore import Qt
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -9,9 +10,9 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 
 class FiveGLaVisualizationDeviceMeasurementDialog(QtWidgets.QDialog, FORM_CLASS):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, flags=Qt.Dialog | Qt.WindowStaysOnTopHint):
         """Constructor."""
-        super(FiveGLaVisualizationDeviceMeasurementDialog, self).__init__(parent)
+        super(FiveGLaVisualizationDeviceMeasurementDialog, self).__init__(parent, flags)
         # Set up the user interface from Designer through FORM_CLASS.
         # After self.setupUi() you can access any designer object by doing
         # self.<objectname>, and you can use autoconnect slots - see

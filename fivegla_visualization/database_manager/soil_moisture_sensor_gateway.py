@@ -3,10 +3,10 @@ from ..custom_logger import CustomLogger
 from ..database_manager import DatabaseConnection
 
 
-class SentekSensorGateway:
-    def __init__(self):
+class SoilMoistureSensorGateway:
+    def __init__(self,table_name):
         self.connection = DatabaseConnection()
-        self.table_name = Constants.SENTEK_SENSOR_TABLE_NAME
+        self.table_name = table_name
         self.custom_logger = CustomLogger()
 
     def get_entity_ids(self):
@@ -42,7 +42,7 @@ class SentekSensorGateway:
         sql_select = "entityid, datecreated, name, controlledproperty"
         sql_order = "datecreated"
         sql_group = "entityid, datecreated, name, controlledproperty"
-        measurements_dictionarys = []
+        measurements_dictionaries = []
 
         for name_column_value in name_column_values:
             sql_filter = "entityid = '{}' and name = '{}' and controlledproperty > 0".format(entity_id,
@@ -50,5 +50,5 @@ class SentekSensorGateway:
             measurement = self.connection.read_records(self.table_name, sql_select=sql_select,
                                                        sql_filter=sql_filter,
                                                        sql_order=sql_order, sql_group=sql_group)
-            measurements_dictionarys.append(measurement)
-        return measurements_dictionarys
+            measurements_dictionaries.append(measurement)
+        return measurements_dictionaries
