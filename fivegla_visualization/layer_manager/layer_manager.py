@@ -2,6 +2,7 @@ from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsProject
 
 from fivegla_visualization.custom_logger import CustomLogger
 from fivegla_visualization.database_manager import DatabaseConnection
+from ..constants import Constants
 
 
 class LayerManager:
@@ -76,7 +77,7 @@ class LayerManager:
         :param table_name: The name of a PostGis Table
         :param geometry_column: The column which has the geometry information
         :param entity_id: The id of the entity
-        :return: A boolean that indicates whether the layer was selected successful
+        :return: The first selected feature or None if no features were selected
         """
         if table_name is None or geometry_column is None or entity_id is None:
             self.custom_logger.log_warning("Table name, geometry column or entity id is None!")
@@ -85,15 +86,20 @@ class LayerManager:
         if layer is None:
             self.custom_logger.log_warning("Layer is None!")
             return None
-        feature = layer.getFeature(entity_id)
-        return feature
+        query = f'"entityId" = \'{entity_id}\''
+        layer.selectByExpression(query)
+        selected_features = layer.selectedFeatures()
+        if not selected_features:
+            self.custom_logger.log_warning("No features selected!")
+            return None
+        return selected_features[0]
 
     def add_device_position_layer(self):
         """ Adds the device position layer to the map canvas
 
         :return: A boolean that indicates whether the layer was added successful
         """
-        return self.add_layer("device_position", "location")
+        return self.add_layer(Constants.DEVICE_POSITION_TABLE_NAME, "location")
 
     @staticmethod
     def create_copy_of_layer(source_layer, layer_name="Copy of Layer"):
@@ -149,10 +155,10 @@ class LayerManager:
             self.clear_layer(latest_device_position_layer)
 
         if latest_device_position_layer is None:
-            device_position_layer = self.select_layer("device_position", "location")
+            device_position_layer = self.select_layer(Constants.DEVICE_POSITION_TABLE_NAME, "location")
             latest_device_position_layer = self.create_copy_of_layer(device_position_layer, memory_layer_name)
 
-        feature = self.select_feature("device_position", "location", entity_id)
+        feature = self.select_feature(Constants.DEVICE_POSITION_TABLE_NAME, "location", entity_id)
         if feature is None:
             # Logging
             self.custom_logger.log_warning("There is no feature with the given entity id!")
