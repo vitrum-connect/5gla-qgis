@@ -2,3 +2,4 @@ fivegla_visualization/database_manager/credentials.json
 fivegla_visualization/test/
 fivegla_visualization/logs/*
 .idea
+__pycache__/
