@@ -1,10 +1,9 @@
-from ..constants import Constants
 from ..custom_logger import CustomLogger
 from ..database_manager import DatabaseConnection
 
 
 class SoilMoistureSensorGateway:
-    def __init__(self,table_name):
+    def __init__(self, table_name):
         self.connection = DatabaseConnection()
         self.table_name = table_name
         self.custom_logger = CustomLogger()
@@ -24,7 +23,7 @@ class SoilMoistureSensorGateway:
         entity_ids = self.connection.extract_values(entity_ids_dict, "entityid")
         return entity_ids
 
-    def get_soil_moisture_measurements(self, entity_id, name_column_values):
+    def get_soil_moisture_measurements(self, entity_id, name_column_values, start_date, end_date):
         """ Returns an array of all measurements for a given entity id
 
         :param name_column_values: The Vales of the name column
@@ -39,14 +38,23 @@ class SoilMoistureSensorGateway:
             self.custom_logger.log_warning("Entity id or name column values not provided!")
             return None
 
+        # log_warning if no valid date was selected
+
+        if start_date is None or end_date is None:
+            self.custom_logger.log_warning("No valid start-date and/or end-date was/were provided!")
+            return None
+
         sql_select = "entityid, datecreated, name, controlledproperty"
         sql_order = "datecreated"
         sql_group = "entityid, datecreated, name, controlledproperty"
         measurements_dictionaries = []
+        end_string = '2024-08-03T00:00:00.000Z'
 
         for name_column_value in name_column_values:
-            sql_filter = "entityid = '{}' and name = '{}' and controlledproperty > 0".format(entity_id,
-                                                                                             name_column_value)
+            sql_filter = ("entityid = '{}' and name = '{}' and controlledproperty > 0 and datecreated >= '{}' and "
+                          "datecreated <= '{}' ").format(
+                entity_id,
+                name_column_value, start_date, end_date)
             measurement = self.connection.read_records(self.table_name, sql_select=sql_select,
                                                        sql_filter=sql_filter,
                                                        sql_order=sql_order, sql_group=sql_group)
