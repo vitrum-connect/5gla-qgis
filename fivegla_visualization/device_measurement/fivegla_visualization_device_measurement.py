@@ -90,7 +90,11 @@ class FiveGLaVisualizationDeviceMeasurement:
         entity_ids = sentek_entity_ids + agvolution_entity_ids
         UiHelper.combo_box_filler(entity_ids, self.dlg.cmbEntityId)
 
-    def convert_date_to_string(self):
+    def convert_date_to_str(self):
+        """Convert date_time_objects into date-strings
+
+        :return: start- and end-date strings
+        """
 
         start_date = self.dlg.dateEditStart.date()
         end_date = self.dlg.dateEditEnd.date()
@@ -110,7 +114,7 @@ class FiveGLaVisualizationDeviceMeasurement:
         selected_entity_id = self.dlg.cmbEntityId.currentText()
 
         # call method to provide string formatted date
-        start_date, end_date = self.convert_date_to_string()
+        start_date, end_date = self.convert_date_to_str()
 
         if start_date > end_date:
             MessageBox.show_error_box("No valid date range!")
