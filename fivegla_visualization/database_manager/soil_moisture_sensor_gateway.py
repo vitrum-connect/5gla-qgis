@@ -48,7 +48,6 @@ class SoilMoistureSensorGateway:
         sql_order = "datecreated"
         sql_group = "entityid, datecreated, name, controlledproperty"
         measurements_dictionaries = []
-        end_string = '2024-08-03T00:00:00.000Z'
 
         for name_column_value in name_column_values:
             sql_filter = ("entityid = '{}' and name = '{}' and controlledproperty > 0 and datecreated >= '{}' and "

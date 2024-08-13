@@ -44,6 +44,22 @@ class CustomLogger:
 
         self.remove_file_handler()
 
+    def log_debug(self, message):
+        """ Logs a info message
+
+        :param message: The log message
+        :return:
+        """
+
+        self.add_file_handler()
+
+        caller_frame = inspect.stack()[1]
+        caller_module = inspect.getmodule(caller_frame[0]).__name__
+        caller_function = caller_frame.function
+        self.logger.debug(f'[{caller_module}.{caller_function}]: {message}')
+
+        self.remove_file_handler()
+
     def log_warning(self, message):
         """ Logs a warning message
 
