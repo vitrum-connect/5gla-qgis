@@ -133,6 +133,9 @@ class DatabaseConnection:
 
             # Führe die SQL-Abfrage aus
             cursor = self.connection.cursor()
+
+            self.custom_logger.log_debug(query)
+
             cursor.execute(query)
 
             column_names = [desc[0] for desc in cursor.description]

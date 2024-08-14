@@ -15,8 +15,14 @@ class CustomLogger:
     def __init__(self):
         self.logger = logging.getLogger('local_app')
         self.logger.setLevel(logging.DEBUG)
+
+        log_dir = Constants.LOG_DIR
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
         current_date = datetime.now().strftime('%Y-%m-%d')
-        log_file = os.path.join(Constants.LOG_DIR, f'{current_date}.log')
+        log_file = os.path.join(log_dir, f'{current_date}.log')
+
         self.file_handler = logging.FileHandler(log_file)
         log_format = '[%(asctime)s] %(levelname)s [%(module)s.%(funcName)s:%(lineno)d]: %(message)s'
         formatter = logging.Formatter(log_format)
@@ -35,6 +41,22 @@ class CustomLogger:
         caller_module = inspect.getmodule(caller_frame[0]).__name__
         caller_function = caller_frame.function
         self.logger.info(f'[{caller_module}.{caller_function}]: {message}')
+
+        self.remove_file_handler()
+
+    def log_debug(self, message):
+        """ Logs a info message
+
+        :param message: The log message
+        :return:
+        """
+
+        self.add_file_handler()
+
+        caller_frame = inspect.stack()[1]
+        caller_module = inspect.getmodule(caller_frame[0]).__name__
+        caller_function = caller_frame.function
+        self.logger.debug(f'[{caller_module}.{caller_function}]: {message}')
 
         self.remove_file_handler()
 

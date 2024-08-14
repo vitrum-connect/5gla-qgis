@@ -1,4 +1,5 @@
 from qgis.PyQt.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
 
 
 class MessageBox:
@@ -23,7 +24,7 @@ class MessageBox:
         :return:  None
         """
         msg_box = QMessageBox()
-
+        msg_box.setWindowFlags(Qt.WindowStaysOnTopHint)
         msg_box.setWindowTitle("Error")
         msg_box.setIcon(QMessageBox.Critical)
         msg_box.setText(error_message)
@@ -38,6 +39,7 @@ class MessageBox:
         :return: None
         """
         msg_box = QMessageBox()
+        msg_box.setWindowFlags(Qt.WindowStaysOnTopHint)
         msg_box.setWindowTitle("Information")
         msg_box.setIcon(QMessageBox.Information)
         msg_box.setText(info_message)
