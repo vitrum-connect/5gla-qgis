@@ -1,4 +1,6 @@
 from datetime import date, timedelta
+import json
+import os
 
 from PyQt5.QtCore import QDate, QTime, QDateTime
 from PyQt5.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView, QDateEdit
@@ -10,6 +12,15 @@ from ..custom_logger import CustomLogger
 from ..database_manager import SoilMoistureSensorGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper, SoilMoistureFigure
+
+
+def load_config():
+    current_dir = os.path.dirname(__file__)
+    config_path = os.path.join(current_dir, '..', 'config.json')
+    with open(config_path) as config_file:
+        config = json.load(config_file)
+
+    return config
 
 
 class FiveGLaVisualizationDeviceMeasurement:
@@ -45,7 +56,9 @@ class FiveGLaVisualizationDeviceMeasurement:
             self.dlg.dateEditEnd = self.dlg.findChild(QDateEdit, "dateEditEnd")
 
             # determine the current month, year and last day of month
-            two_weeks_ago = date.today() - timedelta(days=14)
+            config = load_config()
+            previous_period = config['previous_days_from_today']
+            two_weeks_ago = date.today() - timedelta(days=previous_period)
             starting_day = two_weeks_ago.day
             starting_month = two_weeks_ago.month
             starting_year = two_weeks_ago.year
