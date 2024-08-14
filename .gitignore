@@ -1,5 +1,11 @@
-fivegla_visualization/database_manager/credentials.json
-fivegla_visualization/test/
-fivegla_visualization/logs/*
+**/test/
+**/logs/*
+
+# IDE files
 .idea
-__pycache__/
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+
+# Local credentials file
+**/database_manager/credentials.json
