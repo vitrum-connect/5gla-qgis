@@ -40,8 +40,6 @@ class SoilMoistureSensorGateway:
             self.custom_logger.log_warning("Entity id or name column values not provided!")
             return None
 
-        # log_warning if no valid date was selected
-
         if start_date is None or end_date is None:
             self.custom_logger.log_warning("No valid start-date and/or end-date was/were provided!")
             return None
@@ -55,7 +53,9 @@ class SoilMoistureSensorGateway:
             sql_filter = ("entityid = '{}' and name = '{}' and controlledproperty > 0 and datecreated >= '{}' and "
                           "datecreated <= '{}' ").format(
                 entity_id,
-                name_column_value, start_date, end_date)
+                name_column_value,
+                start_date,
+                end_date)
             measurement = self.connection.read_records(self.table_name, sql_select=sql_select,
                                                        sql_filter=sql_filter,
                                                        sql_order=sql_order, sql_group=sql_group)
