@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from PyQt5.QtCore import QDate, QTime, QDateTime
 from PyQt5.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView, QDateEdit
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -8,8 +10,6 @@ from ..custom_logger import CustomLogger
 from ..database_manager import SoilMoistureSensorGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper, SoilMoistureFigure
-from datetime import date, timedelta
-import calendar
 
 
 class FiveGLaVisualizationDeviceMeasurement:
@@ -44,7 +44,7 @@ class FiveGLaVisualizationDeviceMeasurement:
             self.dlg.dateEditStart = self.dlg.findChild(QDateEdit, "dateEditStart")
             self.dlg.dateEditEnd = self.dlg.findChild(QDateEdit, "dateEditEnd")
 
-            # determine current month, year and last day of month
+            # determine the current month, year and last day of month
             two_weeks_ago = date.today() - timedelta(days=14)
             starting_day = two_weeks_ago.day
             starting_month = two_weeks_ago.month
