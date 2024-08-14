@@ -28,7 +28,9 @@ class SoilMoistureSensorGateway:
 
         :param name_column_values: The Vales of the name column
         :param entity_id: The entity id
-        :return: An array of all measurement for a given entity id or None if the connection is not established
+        :param start_date: The start date
+        :param end_date: The end date
+        :return: An array of all measurements for a given entity id or None if the connection is not established
         """
         if not self.connection.test_connection():
             self.custom_logger.log_warning("No connection to the database!")
