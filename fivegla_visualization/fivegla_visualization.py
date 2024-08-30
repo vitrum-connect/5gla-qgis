@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 
 import os.path
 
@@ -46,6 +46,10 @@ class FiveGLaVisualization:
         self.actions = []
         self.menu = self.tr(u'&5GLa Visualization')
         self.first_start = None
+
+        # change the initial qgis working dir to plugin file
+        plugin_directory = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(plugin_directory)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):

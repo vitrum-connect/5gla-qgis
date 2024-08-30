@@ -1,4 +1,5 @@
-from ..custom_logger import CustomLogger
+import logging
+import logging.config
 from ..database_manager import DatabaseConnection
 
 
@@ -6,7 +7,8 @@ class SoilMoistureSensorGateway:
     def __init__(self, table_name):
         self.connection = DatabaseConnection()
         self.table_name = table_name
-        self.custom_logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        self.logger = logging.getLogger('app')
 
     def get_entity_ids(self):
         """ Returns an array of all entity ids
@@ -14,7 +16,7 @@ class SoilMoistureSensorGateway:
         :return: An array of all entity ids or None if the connection is not established
         """
         if not self.connection.test_connection():
-            self.custom_logger.log_warning("No connection to the database!")
+            self.logger.warning('No connection to the database!')
             return None
         sql_select = "DISTINCT entityid"
         sql_order = "entityid"
@@ -33,15 +35,15 @@ class SoilMoistureSensorGateway:
         :return: An array of all measurements for a given entity id or None if the connection is not established
         """
         if not self.connection.test_connection():
-            self.custom_logger.log_warning("No connection to the database!")
+            self.logger.warning('No connection to the database!')
             return None
 
         if entity_id is None or name_column_values is None:
-            self.custom_logger.log_warning("Entity id or name column values not provided!")
+            self.logger.warning('Entity id or name column values not provided!')
             return None
 
         if start_date is None or end_date is None:
-            self.custom_logger.log_warning("No valid start-date and/or end-date was/were provided!")
+            self.logger.warning('No valid start-date and/or end-date was/were provided!')
             return None
 
         sql_select = "entityid, datecreated, name, controlledproperty"

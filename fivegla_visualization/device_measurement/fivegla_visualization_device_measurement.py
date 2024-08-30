@@ -2,13 +2,16 @@ from datetime import date, timedelta
 import json
 import os
 
+# provisional logging changes
+import logging
+import logging.config
+
 from PyQt5.QtCore import QDate, QTime, QDateTime
 from PyQt5.QtWidgets import QPushButton, QGraphicsScene, QGraphicsView, QDateEdit
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from .fivegla_visualization_device_measurement_dialog import FiveGLaVisualizationDeviceMeasurementDialog
 from ..constants import Constants
-from ..custom_logger import CustomLogger
 from ..database_manager import SoilMoistureSensorGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper, SoilMoistureFigure
@@ -35,7 +38,8 @@ class FiveGLaVisualizationDeviceMeasurement:
         self.agvolution_sensor_gateway = SoilMoistureSensorGateway(Constants.AGVOLUTION_SENSOR_TABLE_NAME)
         self.sentek_sensor_gateway = SoilMoistureSensorGateway(Constants.SENTEK_SENSOR_TABLE_NAME)
         self.layer_manager = LayerManager(self.iface)
-        self.custom_logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        self.logger = logging.getLogger('app')
 
     def run(self):
         """ Create the dialog with elements (after translation) and keep reference
@@ -78,11 +82,10 @@ class FiveGLaVisualizationDeviceMeasurement:
         layer = self.layer_manager.select_layer_from_qgis_project(Constants.SENTEK_SENSOR_TABLE_NAME)
         if not layer:
             if not self.layer_manager.add_layer(Constants.SENTEK_SENSOR_TABLE_NAME, 'location'):
-                self.custom_logger.log_warning("Layer could not be added!")
+                self.logger.warning("Layer could not be added!")
                 MessageBox.show_error_box("Layer could not be added!")
                 return None
-            self.custom_logger.log_info("Layer was added successfully!")
-
+            self.logger.info("Layer was added successfully!")
         self.fill_combo_box_entity_ids()
         self.dlg.show()
         result = self.dlg.exec_()
@@ -141,7 +144,7 @@ class FiveGLaVisualizationDeviceMeasurement:
         sentek_entity_ids = self.sentek_sensor_gateway.get_entity_ids()
         agvolution_entity_ids = self.agvolution_sensor_gateway.get_entity_ids()
         if selected_entity_id in sentek_entity_ids and selected_entity_id in agvolution_entity_ids:
-            self.custom_logger.log_info("The selected entity id is in both manufacture Tables and therefore not unique")
+            self.logger.info("The selected entity id is in both manufacture Tables and therefore not unique")
             MessageBox.show_info_box("The selected entity id is in both manufacture Tables and therefore not unique")
             return None
         if selected_entity_id in sentek_entity_ids:
@@ -160,12 +163,12 @@ class FiveGLaVisualizationDeviceMeasurement:
                                                                                          end_date)
             group_size = 3
         if not all(measurement for measurement in measurements):
-            self.custom_logger.log_info("No measurements for the selected entity id!")
+            self.logger.info("No measurements for the selected entity id!")
             MessageBox.show_info_box("No measurements for the selected entity id!")
             return
         figure = SoilMoistureFigure.create_figure(values=measurements, labels=names_for_plot, group_size=group_size)
         if figure is None:
-            self.custom_logger.log_warning("The figure could not be created!")
+            self.logger.warning("The figure could not be created!")
             MessageBox.show_error_box("The figure could not be created!")
             return
         canvas = FigureCanvas(figure)

@@ -4,7 +4,10 @@ import os.path
 import psycopg2
 
 from ..constants import Constants
-from ..custom_logger import CustomLogger
+# from ..custom_logger import CustomLogger
+
+import logging
+import logging.config
 
 
 class DatabaseConnection:
@@ -15,7 +18,9 @@ class DatabaseConnection:
     def __init__(self):
         self.connection = None
         self.config_file = Constants.DATABASE_CREDENTIALS_FILE
-        self.custom_logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        self.logger = logging.getLogger('app')
+
         if not os.path.exists(self.config_file):
             config = {"dbname": "",
                       "user": "",
@@ -70,13 +75,13 @@ class DatabaseConnection:
                 user=self.config['user'],
                 password=self.config['password'])
             if self.connection:
-                self.custom_logger.log_info("Connection to database was successful.")
+                self.logger.info('Connection to database was successful.')
                 return True
             else:
-                self.custom_logger.log_info("Connection to database was not successful!")
+                self.logger.info('Connection to database was not successful!')
                 return False
         except Exception as e:
-            self.custom_logger.log_warning("An exception occurred trying to connect to the database: {}".format(e))
+            self.logger.warning('An exception occurred trying to connect to the database: {}".format(e)')
             return False
 
     def test_connection(self):
@@ -108,7 +113,7 @@ class DatabaseConnection:
         if self.connection is None:
             self._create_connection()
         if table_name is None or table_name == "":
-            self.custom_logger.log_warning("Table name is not provided.")
+            self.logger.warning('Table name is not provided.')
             return None
         # noinspection PyBroadException
         try:
@@ -131,10 +136,9 @@ class DatabaseConnection:
                 query_order = "ORDER BY {} ".format(sql_order)
                 query += query_order
 
-            # Führe die SQL-Abfrage aus
+            # execute SQL query
             cursor = self.connection.cursor()
-
-            self.custom_logger.log_debug(query)
+            self.logger.debug(query)
 
             cursor.execute(query)
 
@@ -144,6 +148,5 @@ class DatabaseConnection:
             return records
 
         except Exception as e:
-            self.custom_logger.log_warning(
-                "An exception occurred trying to read from the table '{}': {}".format(table_name, e))
+            self.logger.warning("An exception occurred trying to read from the table '{}': {}".format(table_name, e))
             return None

@@ -1,7 +1,9 @@
+import logging
+import logging.config
+
 from PyQt5.QtWidgets import QPushButton
 
 from .fivegla_visualization_device_position_dialog import FiveGLaVisualizationDevicePositionDialog
-from ..custom_logger import CustomLogger
 from ..database_manager import DevicePositionGateway
 from ..layer_manager import LayerManager
 from ..ui_elements import MessageBox, UiHelper
@@ -20,7 +22,8 @@ class FiveGLaVisualizationDevicePosition:
         self.dlg = None
         self.iface = iface
         self.first_start = True
-        self.custom_logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        self.logger = logging.getLogger('app')
         self.layer_manager = LayerManager(self.iface)
         self.callback_first_start = callback_first_start
 
@@ -68,7 +71,7 @@ class FiveGLaVisualizationDevicePosition:
         device_position_gateway = DevicePositionGateway()
         selectedValue = self.dlg.cmbDeviceId.currentText()
         if selectedValue == "":
-            self.custom_logger.log_info("No value selected! Probably during building the combo box.")
+            self.logger.info("No value selected! Probably during building the combo box.")
             return
         transaction_ids = device_position_gateway.get_transaction_ids(selectedValue)
 
