@@ -1,11 +1,12 @@
 import math
 
+import logging
+import logging.config
+
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 from dateutil.parser import parse
-
-from ..custom_logger import CustomLogger
 
 
 class SoilMoistureFigure:
@@ -26,16 +27,17 @@ class SoilMoistureFigure:
         y_title = "Soil Moisture [%]"
         dpi = 800
         font_size = 20
-        logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        logger = logging.getLogger('app')
 
         if len(values) == 0 or len(labels) == 0:
-            logger.log_warning('The values and/or labels are empty')
+            logger.warning('The values and/or labels are empty')
             return None
         if values is None or labels is None:
-            logger.log_warning('The values and/or labels are None')
+            logger.warning('The values and/or labels are None')
             return None
         if not (len(values) // group_size) >= 1:
-            logger.log_warning('The number of subplots is higher than the number of Axes')
+            logger.warning('The number of subplots is higher than the number of Axes')
             return None
 
         count_subplots = math.ceil(len(values) // group_size)

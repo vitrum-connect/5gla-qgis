@@ -1,5 +1,6 @@
 from ..constants import Constants
-from ..custom_logger import CustomLogger
+import logging
+import logging.config
 from ..database_manager import DatabaseConnection
 
 
@@ -7,7 +8,8 @@ class DevicePositionGateway:
     def __init__(self):
         self.connection = DatabaseConnection()
         self.table_name = Constants.DEVICE_POSITION_TABLE_NAME
-        self.custom_logger = CustomLogger()
+        logging.config.fileConfig('logging.conf')
+        self.logger = logging.getLogger('app')
 
     def get_device_ids(self):
         """ Returns an array of all device ids
@@ -15,7 +17,7 @@ class DevicePositionGateway:
         :return: An array of all device ids or None if the connection is not established
         """
         if not self.connection.test_connection():
-            self.custom_logger.log_warning("No connection to the database!")
+            self.logger.warning('No connection to the database!')
             return None
         sql_select = "DISTINCT deviceid"
         sql_order = "deviceid"
@@ -31,10 +33,10 @@ class DevicePositionGateway:
         :return: An array of all transaction ids for a given device id or None if the connection is not established
         """
         if not self.connection.test_connection():
-            self.custom_logger.log_warning("No connection to the database!")
+            self.logger.warning('No connection to the database!')
             return None
         if device_id is None:
-            self.custom_logger.log_warning("No device id provided!")
+            self.logger.warning('No device id provided')
             return None
         sql_select = "DISTINCT transactionid"
         sql_filter = "deviceid = '{}'".format(device_id)
@@ -53,10 +55,10 @@ class DevicePositionGateway:
             None if the connection is not established
         """
         if not self.connection.test_connection():
-            self.custom_logger.log_warning("No connection to the database!")
+            self.logger.warning('No connection to the database!')
             return None
         if device_id is None or transaction_id is None:
-            self.custom_logger.log_warning("No device id or transaction id provided!")
+            self.logger.warning('No device id or transaction id provided!')
             return None
         sql_select = "entityid"
         sql_filter = "deviceid = '{}' AND transactionid = '{}'".format(device_id, transaction_id)
@@ -66,7 +68,7 @@ class DevicePositionGateway:
                                                       sql_order=sql_order)
         entity_ids = self.connection.extract_values(entity_id_dict, "entityid")
         if entity_ids is None:
-            self.custom_logger.log_info("No Entity ID found for the given device id and transaction id!")
+            self.logger.info('No Entity ID found for the given device id and transaction id!')
             return None
         entity_id_latest_position = entity_ids[0]
         return entity_id_latest_position
